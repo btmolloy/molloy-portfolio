@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact | Benjamin Molloy</title>
+    <meta
+      name="description"
+      content="Contact Benjamin Molloy for software engineering, cybersecurity, and DevOps opportunities."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    <script src="assets/js/main.js" defer></script>
+    <script src="assets/js/contact.js" defer></script>
+  </head>
+  <body data-page="contact">
+    <header class="site-header">
+      <div class="wrap nav-shell">
+        <a class="brand" href="index.html">
+          <span class="brand-block">BM</span>
+          <span>Benjamin Molloy</span>
+        </a>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-menu-toggle>
+          Menu
+        </button>
+        <nav class="site-nav" id="site-nav" aria-label="Primary">
+          <a class="nav-link" href="index.html" data-page="home">Home</a>
+          <a class="nav-link" href="about.html" data-page="about">About</a>
+          <a class="nav-link" href="work.html" data-page="work">My Work</a>
+          <a class="nav-link" href="resume.html" data-page="resume">Resume</a>
+          <a class="nav-link" href="contact.html" data-page="contact">Contact</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="page-hero">
+        <div class="wrap">
+          <span class="tagline mono">Contact</span>
+          <h1>Let&apos;s Build Something Useful</h1>
+          <p class="section-intro">
+            Reach out for internships, full-time opportunities, project collaboration, or technical consulting conversations.
+          </p>
+        </div>
+      </section>
+
+      <section class="section-tight">
+        <div class="wrap contact-grid">
+          <article class="contact-card card">
+            <h2 class="section-title">Direct Channels</h2>
+            <ul class="contact-list">
+              <li><strong>Email:</strong> <a href="mailto:btmolloy2@gmail.com">btmolloy2@gmail.com</a></li>
+              <li><strong>Phone:</strong> <a href="tel:+15133748989">(513) 374-8989</a></li>
+              <li><strong>LinkedIn:</strong> <a href="https://linkedin.com/in/ben-molloy/" target="_blank" rel="noopener noreferrer">linkedin.com/in/ben-molloy</a></li>
+              <li><strong>Location:</strong> Cincinnati, OH</li>
+            </ul>
+            <div class="button-row">
+              <a class="btn btn-primary" href="work.html">Browse My Work</a>
+            </div>
+          </article>
+
+          <article class="contact-card card">
+            <h2 class="section-title">Send a Message</h2>
+            <form id="contact-form" class="form-grid">
+              <div class="form-field">
+                <label for="name">Name</label>
+                <input id="name" name="name" type="text" required />
+              </div>
+              <div class="form-field">
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" required />
+              </div>
+              <div class="form-field">
+                <label for="subject">Subject</label>
+                <input id="subject" name="subject" type="text" required />
+              </div>
+              <div class="form-field">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" required></textarea>
+              </div>
+              <button class="btn btn-secondary" type="submit">Open Email Draft</button>
+              <p class="form-note mono" id="contact-status">This form opens your default email app with a prefilled draft.</p>
+            </form>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap footer-shell">
+        <p>&copy; <span data-current-year></span> Benjamin Molloy</p>
+        <p class="mono">linkedin.com/in/ben-molloy</p>
+      </div>
+    </footer>
+  </body>
+</html>

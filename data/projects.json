@@ -1,0 +1,200 @@
+[
+  {
+    "id": "nku-cyber-platform",
+    "title": "Interactive Cyber Challenge Platform",
+    "role": "Full Stack Web Developer",
+    "timeline": "January 2024 - September 2025",
+    "summary": "Designed and maintained a secure full-stack platform for interactive cyber security challenges used in academic learning environments.",
+    "stack": ["Vue.js", "Node.js", "AWS", "Linux", "JavaScript"],
+    "tags": ["Full Stack", "Cybersecurity", "Cloud"],
+    "highlights": [
+      "Built secure front-end and back-end components for challenge delivery.",
+      "Implemented access controls and hardened deployment patterns for training scenarios.",
+      "Maintained performance and reliability while supporting active student usage."
+    ],
+    "visibility": "Private",
+    "featured": true,
+    "order": 90,
+    "links": {
+      "live": "",
+      "repo": "",
+      "caseStudy": ""
+    }
+  },
+  {
+    "id": "server-network-ops",
+    "title": "Campus Server and Network Operations",
+    "role": "Server and Networking Team Support Specialist",
+    "timeline": "August 2023 - Present",
+    "summary": "Managed Microsoft server and Active Directory environments while supporting enterprise network reliability across campus.",
+    "stack": ["Active Directory", "Windows Server", "Cisco", "Dell Infrastructure"],
+    "tags": ["Infrastructure", "Networking", "Operations"],
+    "highlights": [
+      "Maintained server configurations and handled routine system updates.",
+      "Supported campus-wide network maintenance and hardware lifecycle work.",
+      "Contributed to stable and resilient academic IT services."
+    ],
+    "visibility": "Private",
+    "featured": true,
+    "order": 80,
+    "links": {
+      "live": "",
+      "repo": "",
+      "caseStudy": ""
+    }
+  },
+  {
+    "id": "deanhouston-devops",
+    "title": "DeanHouston Web Infrastructure Modernization",
+    "role": "DevOps Intern",
+    "timeline": "May 2023 - August 2023",
+    "summary": "Improved web server reliability and delivery speed by combining cloud operations, monitoring, and update automation.",
+    "stack": ["AWS", "Node.js", "Vue.js", "Bash", "Monitoring"],
+    "tags": ["DevOps", "Cloud", "Automation"],
+    "highlights": [
+      "Helped optimize web server operation and traffic handling.",
+      "Automated recurring update tasks to reduce manual maintenance.",
+      "Implemented monitoring workflows to improve incident visibility."
+    ],
+    "visibility": "Private",
+    "featured": true,
+    "order": 70,
+    "links": {
+      "live": "",
+      "repo": "",
+      "caseStudy": ""
+    }
+  },
+  {
+    "id": "student-tech-support",
+    "title": "Student Technology Support Playbooks",
+    "role": "Student Technology Support Specialist",
+    "timeline": "February 2022 - August 2023",
+    "summary": "Delivered technical support for hardware, software, and connectivity issues while documenting repeatable support workflows.",
+    "stack": ["IT Support", "Troubleshooting", "Knowledge Management"],
+    "tags": ["Operations", "Support", "Process"],
+    "highlights": [
+      "Resolved a broad range of endpoint and software incidents.",
+      "Created reusable troubleshooting guidance for common user issues.",
+      "Improved support consistency through better internal documentation."
+    ],
+    "visibility": "Private",
+    "featured": false,
+    "order": 60,
+    "links": {
+      "live": "",
+      "repo": "",
+      "caseStudy": ""
+    }
+  },
+  {
+    "id": "patch-automation-toolkit",
+    "title": "Patch and Configuration Automation Toolkit",
+    "role": "DevOps and Infrastructure Automation",
+    "timeline": "2024 - Present",
+    "summary": "Developed script-based workflows to streamline maintenance windows, reduce drift, and improve operational repeatability.",
+    "stack": ["Python", "PowerShell", "Bash", "Configuration Management"],
+    "tags": ["Automation", "DevOps", "Infrastructure"],
+    "highlights": [
+      "Automated repetitive server hygiene and patching tasks.",
+      "Reduced manual deployment effort with parameterized scripts.",
+      "Improved consistency across systems through standardized runbooks."
+    ],
+    "visibility": "Private",
+    "featured": false,
+    "order": 50,
+    "links": {
+      "live": "",
+      "repo": "",
+      "caseStudy": ""
+    }
+  },
+  {
+    "id": "nkcyber-rnd",
+    "title": "NKCyber R&D Security Initiatives",
+    "role": "Head of R&D, NKCyber Club",
+    "timeline": "August 2021 - Present",
+    "summary": "Led student-led cyber projects focused on practical defense tooling and applied security experimentation.",
+    "stack": ["Python", "Bash", "PowerShell", "JavaScript"],
+    "tags": ["Cybersecurity", "Leadership", "Research"],
+    "highlights": [
+      "Coordinated development efforts across multidisciplinary student teams.",
+      "Prototyped malware protection concepts and physical security ideas.",
+      "Mentored contributors on secure development practices."
+    ],
+    "visibility": "Private",
+    "featured": false,
+    "order": 40,
+    "links": {
+      "live": "",
+      "repo": "",
+      "caseStudy": ""
+    }
+  },
+  {
+    "id": "network-hardening-program",
+    "title": "Network Device Hardening Program",
+    "role": "Campus Infrastructure Support",
+    "timeline": "2023 - Present",
+    "summary": "Supported Cisco and Dell network device updates and hardening activities to improve uptime and security posture.",
+    "stack": ["Cisco", "Switching", "Network Security", "Change Control"],
+    "tags": ["Networking", "Security", "Infrastructure"],
+    "highlights": [
+      "Performed update validation and staged rollout checks.",
+      "Assisted with maintenance planning and outage minimization.",
+      "Contributed to improved resilience across production segments."
+    ],
+    "visibility": "Private",
+    "featured": false,
+    "order": 30,
+    "links": {
+      "live": "",
+      "repo": "",
+      "caseStudy": ""
+    }
+  },
+  {
+    "id": "defensive-cyber-readiness",
+    "title": "Defensive Cyber Readiness Program",
+    "role": "175th Cyber Protection Team",
+    "timeline": "September 2024 - Present",
+    "summary": "Contributed to defensive operations readiness through network monitoring, threat analysis, and incident response practice.",
+    "stack": ["Threat Analysis", "Incident Response", "Network Monitoring"],
+    "tags": ["Cybersecurity", "Operations", "Defense"],
+    "highlights": [
+      "Supported readiness exercises and operational playbook use.",
+      "Strengthened incident triage and response coordination skills.",
+      "Reinforced practical SOC-style workflows for active defense."
+    ],
+    "visibility": "Private",
+    "featured": false,
+    "order": 20,
+    "links": {
+      "live": "",
+      "repo": "",
+      "caseStudy": ""
+    }
+  },
+  {
+    "id": "rotc-leadership-simulations",
+    "title": "ROTC Leadership and Decision Simulations",
+    "role": "ROTC Cadet",
+    "timeline": "October 2023 - Present",
+    "summary": "Developed strategic decision-making and team coordination through structured training, planning drills, and leadership scenarios.",
+    "stack": ["Leadership", "Decision Modeling", "Team Coordination"],
+    "tags": ["Leadership", "Strategy", "Training"],
+    "highlights": [
+      "Built experience leading teams under time-constrained conditions.",
+      "Applied structured planning models to mission-style exercises.",
+      "Improved communication and prioritization in high-pressure contexts."
+    ],
+    "visibility": "Private",
+    "featured": false,
+    "order": 10,
+    "links": {
+      "live": "",
+      "repo": "",
+      "caseStudy": ""
+    }
+  }
+]

@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Work | Benjamin Molloy</title>
+    <meta
+      name="description"
+      content="Browse projects from Benjamin Molloy's portfolio, including full-stack development, cloud infrastructure, network operations, and cybersecurity initiatives."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    <script src="assets/js/main.js" defer></script>
+    <script src="assets/js/work.js" defer></script>
+  </head>
+  <body data-page="work">
+    <header class="site-header">
+      <div class="wrap nav-shell">
+        <a class="brand" href="index.html">
+          <span class="brand-block">BM</span>
+          <span>Benjamin Molloy</span>
+        </a>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-menu-toggle>
+          Menu
+        </button>
+        <nav class="site-nav" id="site-nav" aria-label="Primary">
+          <a class="nav-link" href="index.html" data-page="home">Home</a>
+          <a class="nav-link" href="about.html" data-page="about">About</a>
+          <a class="nav-link" href="work.html" data-page="work">My Work</a>
+          <a class="nav-link" href="resume.html" data-page="resume">Resume</a>
+          <a class="nav-link" href="contact.html" data-page="contact">Contact</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="page-hero">
+        <div class="wrap">
+          <span class="tagline mono">My Work</span>
+          <h1>Project Archive</h1>
+          <p class="section-intro">
+            This page is data-driven to make updates simple. Add a new entry to <span class="mono">data/projects.json</span> and it appears automatically with filters and pagination.
+          </p>
+        </div>
+      </section>
+
+      <section class="section-tight">
+        <div class="wrap">
+          <article class="project-controls card">
+            <div class="form-field">
+              <label for="project-search">Search projects</label>
+              <input
+                class="search-input"
+                type="search"
+                id="project-search"
+                placeholder="Search by title, stack, role, or keywords"
+              />
+            </div>
+            <div class="filter-list" id="project-filters" aria-label="Project filters"></div>
+          </article>
+
+          <p class="project-count mono" id="project-count">Loading projects...</p>
+
+          <div class="project-grid" id="project-list" aria-live="polite">
+            <article class="project-card card">
+              <h3>Loading project archive...</h3>
+              <p>Fetching current entries.</p>
+            </article>
+          </div>
+
+          <div class="pagination" id="pagination" aria-label="Project pagination"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap footer-shell">
+        <p>&copy; <span data-current-year></span> Benjamin Molloy</p>
+        <p class="mono">Dynamic archive with pagination</p>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Benjamin Molloy | Portfolio</title>
+    <meta
+      name="description"
+      content="Portfolio of Benjamin Molloy, software and cybersecurity professional focused on full stack development, DevOps automation, and secure infrastructure."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    <script src="assets/js/main.js" defer></script>
+    <script src="assets/js/home.js" defer></script>
+  </head>
+  <body data-page="home">
+    <header class="site-header">
+      <div class="wrap nav-shell">
+        <a class="brand" href="index.html">
+          <span class="brand-block">BM</span>
+          <span>Benjamin Molloy</span>
+        </a>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-menu-toggle>
+          Menu
+        </button>
+        <nav class="site-nav" id="site-nav" aria-label="Primary">
+          <a class="nav-link" href="index.html" data-page="home">Home</a>
+          <a class="nav-link" href="about.html" data-page="about">About</a>
+          <a class="nav-link" href="work.html" data-page="work">My Work</a>
+          <a class="nav-link" href="resume.html" data-page="resume">Resume</a>
+          <a class="nav-link" href="contact.html" data-page="contact">Contact</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="wrap hero-grid">
+          <div>
+            <span class="tagline mono">Software Engineering + Cybersecurity</span>
+            <h1 class="hero-title">Benjamin Molloy</h1>
+            <p class="hero-sub">
+              Senior undergraduate focused on secure software systems, cloud operations, and DevOps automation. I build practical systems that are maintainable, measurable, and resilient under real use.
+            </p>
+            <div class="button-row">
+              <a class="btn btn-primary" href="work.html">View My Work</a>
+              <a class="btn btn-secondary" href="contact.html">Get In Touch</a>
+            </div>
+          </div>
+          <aside class="hero-panel card" aria-label="Snapshot">
+            <article class="hero-item">
+              <p class="hero-item-title mono">Location</p>
+              <p class="hero-item-text">Cincinnati, Ohio</p>
+            </article>
+            <article class="hero-item">
+              <p class="hero-item-title mono">Education</p>
+              <p class="hero-item-text">B.S. Candidate, Northern Kentucky University (May 2026)</p>
+            </article>
+            <article class="hero-item">
+              <p class="hero-item-title mono">Current Focus</p>
+              <p class="hero-item-text">DevOps automation, secure web engineering, and infrastructure hardening</p>
+            </article>
+            <article class="hero-item">
+              <p class="hero-item-title mono">Open To</p>
+              <p class="hero-item-text">Software engineering, cloud operations, and cybersecurity roles</p>
+            </article>
+          </aside>
+        </div>
+      </section>
+
+      <section class="section-tight">
+        <div class="wrap stat-grid">
+          <article class="stat-card card">
+            <p class="stat-number">3.95</p>
+            <p class="stat-label mono">GPA</p>
+          </article>
+          <article class="stat-card card">
+            <p class="stat-number">4+</p>
+            <p class="stat-label mono">Years Tech Support & Operations</p>
+          </article>
+          <article class="stat-card card">
+            <p class="stat-number">9</p>
+            <p class="stat-label mono">Current Portfolio Entries</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="featured">
+        <div class="wrap">
+          <div class="work-header">
+            <span class="tagline mono">Featured Work</span>
+            <h2 class="section-title">Representative Projects</h2>
+            <p class="section-intro">
+              A selected set of projects spanning secure full-stack development, cloud operations, and enterprise network support. The full project archive is searchable and paginated.
+            </p>
+          </div>
+          <div class="grid-three" id="featured-projects" aria-live="polite">
+            <article class="feature-card card">
+              <h3>Loading featured projects...</h3>
+              <p>Preparing current case notes.</p>
+            </article>
+          </div>
+          <div class="button-row">
+            <a class="btn btn-secondary" href="work.html">Browse Full Work Archive</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-tight">
+        <div class="wrap grid-three">
+          <article class="info-card card">
+            <h3>Build Secure Systems</h3>
+            <p>
+              I apply a security-first mindset from architecture through deployment, combining practical controls with strong engineering fundamentals.
+            </p>
+          </article>
+          <article class="info-card card">
+            <h3>Automate Operations</h3>
+            <p>
+              I reduce repetitive operational overhead with scripting and repeatable workflows that improve reliability and response time.
+            </p>
+          </article>
+          <article class="info-card card">
+            <h3>Lead Technical Teams</h3>
+            <p>
+              From NKCyber R&amp;D to military training environments, I prioritize clear coordination, accountability, and consistent execution.
+            </p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap footer-shell">
+        <p>&copy; <span data-current-year></span> Benjamin Molloy</p>
+        <p class="mono">Built for GitHub Pages</p>
+      </div>
+    </footer>
+  </body>
+</html>

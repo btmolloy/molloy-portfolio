@@ -1,6 +1,5 @@
 # Benjamin Molloy Portfolio
 
-Professional flat-style multi-page portfolio built for GitHub Pages.
 
 ## Pages
 
@@ -11,12 +10,6 @@ Professional flat-style multi-page portfolio built for GitHub Pages.
 - `resume.html` - Resume-style summary page
 - `contact.html` - Contact channels + mailto message form
 - `404.html` - GitHub Pages 404 page
-
-## Tech
-
-- Plain HTML, CSS, and JavaScript (no build step required)
-- Project data loaded from `data/projects.js`
-- Works on GitHub Pages project sites and user sites
 
 ## Add a New Project
 
@@ -69,15 +62,6 @@ Professional flat-style multi-page portfolio built for GitHub Pages.
 }
 ```
 
-## Local Preview
-
-Run from repository root:
-
-```bash
-python3 -m http.server 8080
-```
-
-Then open `http://localhost:8080`.
 
 ## Deploy on GitHub Pages
 

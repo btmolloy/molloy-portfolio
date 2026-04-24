@@ -1,4 +1,4 @@
-[
+window.PORTFOLIO_PROJECTS = [
   {
     "id": "nettower-agentless-network-topology",
     "title": "NetTower: Agentless Network Topology & Situational Awareness Platform",
@@ -639,3 +639,4 @@
     ]
   }
 ]
+;

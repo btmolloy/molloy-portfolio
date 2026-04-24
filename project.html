@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project | Benjamin Molloy</title>
+    <meta
+      name="description"
+      content="Detailed project case notes from Benjamin Molloy's portfolio, including architecture, implementation highlights, and gallery assets."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    <script src="assets/js/main.js" defer></script>
+    <script src="data/projects.js" defer></script>
+    <script src="assets/js/project.js" defer></script>
+  </head>
+  <body data-page="work">
+    <header class="site-header">
+      <div class="wrap nav-shell">
+        <a class="brand" href="index.html">
+          <span class="brand-block">BM</span>
+          <span>Benjamin Molloy</span>
+        </a>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-menu-toggle>
+          Menu
+        </button>
+        <nav class="site-nav" id="site-nav" aria-label="Primary">
+          <a class="nav-link" href="index.html" data-page="home">Home</a>
+          <a class="nav-link" href="about.html" data-page="about">About</a>
+          <a class="nav-link" href="work.html" data-page="work">My Work</a>
+          <a class="nav-link" href="resume.html" data-page="resume">Resume</a>
+          <a class="nav-link" href="contact.html" data-page="contact">Contact</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="project-main">
+      <section class="page-hero project-page-hero">
+        <div class="wrap">
+          <span class="tagline mono">Project Detail</span>
+          <h1 id="project-title">Loading project...</h1>
+          <p class="section-intro" id="project-summary">Preparing project details.</p>
+          <div class="button-row" id="project-hero-actions">
+            <a class="btn btn-secondary" href="work.html">Back to My Work</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-tight" id="project-found">
+        <div class="wrap project-detail-grid">
+          <article class="card project-detail-main">
+            <figure class="project-detail-media" id="project-detail-media"></figure>
+            <h2 class="section-title section-title-sm">Project Overview</h2>
+            <p class="project-long-text" id="project-overview"></p>
+
+            <h3 class="project-subtitle">Key Contributions</h3>
+            <ul class="highlight-list" id="project-contributions"></ul>
+
+            <div class="project-detail-columns" id="project-detail-columns">
+              <div id="project-notes-block">
+                <h3 class="project-subtitle">Implementation Notes</h3>
+                <ul class="highlight-list" id="project-notes"></ul>
+              </div>
+              <div id="project-next-block">
+                <h3 class="project-subtitle">Next Iterations</h3>
+                <ul class="highlight-list" id="project-next"></ul>
+              </div>
+            </div>
+          </article>
+
+          <aside class="card project-detail-side">
+            <h2 class="section-title section-title-sm">Snapshot</h2>
+            <p class="project-meta mono" id="project-meta"></p>
+            <p class="project-long-text" id="project-visibility"></p>
+
+            <h3 class="project-subtitle">Stack</h3>
+            <ul class="pill-list" id="project-stack"></ul>
+
+            <h3 class="project-subtitle">Tags</h3>
+            <ul class="pill-list" id="project-tags"></ul>
+
+            <div class="button-row project-side-actions" id="project-link-actions"></div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="section-tight" id="project-gallery-section">
+        <div class="wrap">
+          <h2 class="section-title section-title-sm">Gallery</h2>
+          <p class="section-intro">Add more images inside each project's <span class="mono">gallery</span> array to expand this section automatically.</p>
+          <div class="project-gallery" id="project-gallery"></div>
+        </div>
+      </section>
+
+      <section class="section-tight" id="project-missing" hidden>
+        <div class="wrap">
+          <article class="card empty-state">
+            <h2 class="section-title section-title-sm">Project not found</h2>
+            <p>The requested project link is unavailable. Browse the full archive to select another entry.</p>
+            <div class="button-row">
+              <a class="btn btn-primary" href="work.html">Open My Work</a>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap footer-shell">
+        <p>&copy; <span data-current-year></span> Benjamin Molloy</p>
+        <p class="mono">Dynamic project pages for GitHub Pages</p>
+      </div>
+    </footer>
+  </body>
+</html>

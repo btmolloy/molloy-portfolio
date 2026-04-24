@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">NetTower Showcase Slot 1</title>
+  <desc id="desc">Placeholder image slot for NetTower showcase photo 1.</desc>
+  <rect width="1200" height="675" fill="#eef4ff"/>
+  <rect x="80" y="70" width="1040" height="535" rx="24" fill="#ffffff" stroke="#d7e3f6" stroke-width="4"/>
+  <rect x="130" y="130" width="940" height="290" rx="16" fill="#dce8ff"/>
+  <text x="600" y="530" text-anchor="middle" font-family="Arial, sans-serif" font-size="42" font-weight="700" fill="#2f6fed">NetTower Showcase Photo 01</text>
+  <text x="600" y="580" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" fill="#5b6574">Replace this file with your real screenshot</text>
+</svg>

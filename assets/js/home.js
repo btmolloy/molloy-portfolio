@@ -13,13 +13,21 @@ document.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
-  try {
+  async function loadProjects() {
+    if (Array.isArray(window.PORTFOLIO_PROJECTS) && window.PORTFOLIO_PROJECTS.length) {
+      return window.PORTFOLIO_PROJECTS;
+    }
+
     const response = await fetch("data/projects.json");
     if (!response.ok) {
       throw new Error("Could not load projects.");
     }
 
-    const projects = await response.json();
+    return response.json();
+  }
+
+  try {
+    const projects = await loadProjects();
     const featured = projects
       .filter((project) => project.featured)
       .sort((a, b) => (b.order || 0) - (a.order || 0));
@@ -28,6 +36,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     container.innerHTML = cards
       .map((project) => {
+        const imageData = project.image;
+        const imageSrc = typeof imageData === "string" ? imageData : imageData?.src || "";
+        const imageAlt =
+          typeof imageData === "object" && imageData?.alt
+            ? imageData.alt
+            : `${project.title || "Project"} preview`;
         const stack = (project.stack || [])
           .slice(0, 4)
           .map((tech) => `<li class="pill">${escapeHtml(tech)}</li>`)
@@ -37,15 +51,17 @@ document.addEventListener("DOMContentLoaded", async () => {
         const timeline = escapeHtml(project.timeline || "Timeline available upon request");
         const title = escapeHtml(project.title || "Project");
         const projectId = encodeURIComponent(project.id || "");
+        const detailLink = `project.html?project=${projectId}`;
 
         return `
           <article class="feature-card card">
+            ${imageSrc ? `<figure class="feature-media"><img class="feature-thumb" src="${escapeHtml(imageSrc)}" alt="${escapeHtml(imageAlt)}" loading="lazy" decoding="async" /></figure>` : ""}
             <p class="project-meta mono">${timeline}</p>
-            <h3>${title}</h3>
+            <h3><a class="project-title-link" href="${detailLink}">${title}</a></h3>
             <p>${summary}</p>
             <ul class="pill-list">${stack}</ul>
             <div class="button-row">
-              <a class="btn btn-secondary" href="work.html?project=${projectId}">View Case Notes</a>
+              <a class="btn btn-secondary" href="${detailLink}">Open Project</a>
             </div>
           </article>
         `;

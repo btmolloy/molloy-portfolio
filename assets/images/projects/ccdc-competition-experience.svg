@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">Collegiate Cyber Defense Competition (CCDC)</title>
+  <desc id="desc">Flat style illustration representing Collegiate Cyber Defense Competition (CCDC).</desc>
+  <rect width="1200" height="675" fill="#edf8f5"/>
+  <rect x="74" y="70" width="1052" height="535" rx="30" fill="#ffffff" stroke="#d7deea" stroke-width="3"/>
+  <rect x="74" y="70" width="1052" height="120" rx="30" fill="#d7efe7"/>
+  <rect x="112" y="114" width="92" height="22" rx="11" fill="#2f9079"/>
+  <circle cx="1030" cy="128" r="14" fill="#63baa0"/>
+  <circle cx="1070" cy="128" r="14" fill="#2f9079"/>
+
+  <rect x="114" y="236" width="278" height="250" rx="22" fill="#d7efe7"/>
+  <rect x="155" y="280" width="196" height="18" rx="9" fill="#63baa0"/>
+  <rect x="155" y="318" width="148" height="18" rx="9" fill="#2f9079"/>
+  <rect x="155" y="356" width="170" height="18" rx="9" fill="#ffffff"/>
+  <circle cx="167" cy="420" r="18" fill="#2f9079"/>
+  <circle cx="223" cy="420" r="18" fill="#63baa0"/>
+  <circle cx="279" cy="420" r="18" fill="#ffffff"/>
+
+  <rect x="442" y="236" width="640" height="250" rx="22" fill="#f7f9fc"/>
+  <line x1="502" y1="300" x2="780" y2="300" stroke="#63baa0" stroke-width="8" stroke-linecap="round"/>
+  <line x1="780" y1="300" x2="960" y2="380" stroke="#2f9079" stroke-width="8" stroke-linecap="round"/>
+  <line x1="624" y1="380" x2="780" y2="300" stroke="#2f9079" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="502" cy="300" r="18" fill="#2f9079"/>
+  <circle cx="624" cy="380" r="18" fill="#63baa0"/>
+  <circle cx="780" cy="300" r="18" fill="#2f9079"/>
+  <circle cx="960" cy="380" r="18" fill="#63baa0"/>
+
+  <text x="112" y="536" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#2b3441">CYBERSECURITY</text>
+  <text x="442" y="544" font-family="Arial, sans-serif" font-size="44" font-weight="700" fill="#1f2a37">Collegiate Cyber Defense Competition</text>
+  <text x="442" y="592" font-family="Arial, sans-serif" font-size="44" font-weight="700" fill="#1f2a37">(CCDC)</text>
+</svg>

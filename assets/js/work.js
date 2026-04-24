@@ -36,6 +36,19 @@ document.addEventListener("DOMContentLoaded", async () => {
   let queryProjectHandled = false;
   let queryProjectFocused = false;
 
+  async function loadProjects() {
+    if (Array.isArray(window.PORTFOLIO_PROJECTS) && window.PORTFOLIO_PROJECTS.length) {
+      return window.PORTFOLIO_PROJECTS;
+    }
+
+    const response = await fetch("data/projects.json");
+    if (!response.ok) {
+      throw new Error("Failed to fetch projects");
+    }
+
+    return response.json();
+  }
+
   function applyFilters(resetPage = true) {
     if (resetPage) {
       state.page = 1;
@@ -119,6 +132,19 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     listEl.innerHTML = pageItems
       .map((project) => {
+        const projectId = escapeHtml(project.id || "");
+        const detailLink = `project.html?project=${encodeURIComponent(project.id || "")}`;
+        const imageData = project.image;
+        const imageSrc = typeof imageData === "string" ? imageData : imageData?.src || "";
+        const imageAlt =
+          typeof imageData === "object" && imageData?.alt
+            ? imageData.alt
+            : `${project.title || "Project"} preview`;
+
+        const mediaMarkup = imageSrc
+          ? `<figure class="project-media"><img class="project-thumb" src="${escapeHtml(imageSrc)}" alt="${escapeHtml(imageAlt)}" loading="lazy" decoding="async" /></figure>`
+          : "";
+
         const stack = (project.stack || [])
           .map((tech) => `<li class="pill">${escapeHtml(tech)}</li>`)
           .join("");
@@ -138,8 +164,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         const links = project.links || {};
         const actions = [];
 
+        actions.push(`<a class="btn btn-primary" href="${detailLink}">Open Project</a>`);
+
         if (links.live) {
-          actions.push(buildActionButton("Live", escapeHtml(links.live), "btn btn-primary"));
+          actions.push(buildActionButton("Live", escapeHtml(links.live)));
         }
 
         if (links.repo) {
@@ -155,10 +183,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         const spotlightClass = queryProjectId && project.id === queryProjectId ? " spotlight" : "";
 
         return `
-          <article class="project-card card${spotlightClass}" id="project-${escapeHtml(project.id || "")}">
+          <article class="project-card card${spotlightClass}" id="project-${projectId}">
+            ${mediaMarkup}
             <div>
               <p class="project-meta mono">${escapeHtml(project.timeline || "Timeline pending")} | ${escapeHtml(project.role || "Project")}</p>
-              <h3>${escapeHtml(project.title || "Untitled")}</h3>
+              <h3><a class="project-title-link" href="${detailLink}">${escapeHtml(project.title || "Untitled")}</a></h3>
               <p class="project-summary">${escapeHtml(project.summary || "Summary pending")}</p>
             </div>
             <ul class="pill-list">${stack}</ul>
@@ -220,12 +249,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   try {
-    const response = await fetch("data/projects.json");
-    if (!response.ok) {
-      throw new Error("Failed to fetch projects");
-    }
-
-    const projects = await response.json();
+    const projects = await loadProjects();
     state.projects = projects.sort((a, b) => (b.order || 0) - (a.order || 0));
     applyFilters(false);
   } catch (error) {

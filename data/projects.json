@@ -37,7 +37,7 @@
     "order": 110,
     "links": {
       "live": "",
-      "repo": "",
+      "repo": "https://github.com/btmolloy/NetTower-Capstone-Project",
       "caseStudy": ""
     },
     "image": {
@@ -65,16 +65,16 @@
     },
     "gallery": [
       {
-        "src": "assets/images/projects/nettower-showcase-01.svg",
-        "alt": "NetTower showcase slot 1 for your screenshot."
+        "src": "assets/images/projects/nettower-showcase-01.png",
+        "alt": "NetTower 2D tree topology view with activity heat."
       },
       {
-        "src": "assets/images/projects/nettower-showcase-02.svg",
-        "alt": "NetTower showcase slot 2 for your screenshot."
+        "src": "assets/images/projects/nettower-showcase-02.png",
+        "alt": "NetTower 2D star topology view with activity heat."
       },
       {
-        "src": "assets/images/projects/nettower-showcase-03.svg",
-        "alt": "NetTower showcase slot 3 for your screenshot."
+        "src": "assets/images/projects/nettower-showcase-03.png",
+        "alt": "NetTower 3D topology view with activity heat."
       }
     ]
   },

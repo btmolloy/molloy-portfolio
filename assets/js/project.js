@@ -47,6 +47,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   const detailColumnsEl = document.getElementById("project-detail-columns");
   const foundSection = document.getElementById("project-found");
   const missingSection = document.getElementById("project-missing");
+  const lightboxEl = document.getElementById("gallery-lightbox");
+  const lightboxPanelEl = document.getElementById("gallery-lightbox-panel");
+  const lightboxImageEl = document.getElementById("gallery-lightbox-image");
+  const lightboxCaptionEl = document.getElementById("gallery-lightbox-caption");
+  const lightboxCloseEl = document.getElementById("gallery-lightbox-close");
+  let activeLightboxTrigger = null;
 
   async function loadProjects() {
     if (Array.isArray(window.PORTFOLIO_PROJECTS) && window.PORTFOLIO_PROJECTS.length) {
@@ -79,6 +85,119 @@ document.addEventListener("DOMContentLoaded", async () => {
   function buildExternalButton(label, href, className = "btn btn-secondary") {
     return `<a class="${className}" href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer">${label}</a>`;
   }
+
+  function resolveImageSource(src) {
+    if (!src) {
+      return "";
+    }
+
+    try {
+      return new URL(src, window.location.href).toString();
+    } catch {
+      return src;
+    }
+  }
+
+  function openLightbox(src, alt, fallbackSrc = "", trigger = null) {
+    if (!lightboxEl || !lightboxImageEl) {
+      return;
+    }
+
+    const resolvedSrc = resolveImageSource(src);
+    const resolvedFallback = resolveImageSource(fallbackSrc);
+
+    if (!resolvedSrc && !resolvedFallback) {
+      return;
+    }
+
+    lightboxImageEl.dataset.fallbackSrc = resolvedFallback || "";
+    lightboxImageEl.src = resolvedSrc || resolvedFallback;
+    lightboxImageEl.alt = alt || "Expanded project gallery image";
+    lightboxImageEl.onerror = () => {
+      const fallback = lightboxImageEl.dataset.fallbackSrc || "";
+      if (fallback && lightboxImageEl.src !== fallback) {
+        lightboxImageEl.src = fallback;
+        return;
+      }
+      if (lightboxCaptionEl) {
+        lightboxCaptionEl.textContent = "Image preview unavailable.";
+      }
+    };
+
+    if (lightboxCaptionEl) {
+      lightboxCaptionEl.textContent = alt || "";
+    }
+
+    activeLightboxTrigger = trigger;
+    lightboxEl.hidden = false;
+    lightboxEl.setAttribute("aria-hidden", "false");
+    document.body.classList.add("no-scroll");
+
+    if (lightboxCloseEl) {
+      window.requestAnimationFrame(() => lightboxCloseEl.focus());
+    }
+  }
+
+  function closeLightbox() {
+    if (!lightboxEl || !lightboxImageEl) {
+      return;
+    }
+
+    lightboxEl.hidden = true;
+    lightboxEl.setAttribute("aria-hidden", "true");
+    lightboxImageEl.src = "";
+    lightboxImageEl.alt = "";
+
+    if (lightboxCaptionEl) {
+      lightboxCaptionEl.textContent = "";
+    }
+
+    document.body.classList.remove("no-scroll");
+    if (activeLightboxTrigger) {
+      activeLightboxTrigger.focus();
+      activeLightboxTrigger = null;
+    }
+  }
+
+  function bindGalleryExpanders() {
+    if (!galleryEl) {
+      return;
+    }
+
+    galleryEl.querySelectorAll("[data-gallery-expand]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const imageEl = button.querySelector(".project-gallery-image");
+        const src = imageEl?.currentSrc || imageEl?.getAttribute("src") || "";
+        const fallbackSrc = imageEl?.getAttribute("src") || "";
+        const alt = imageEl?.getAttribute("alt") || "Expanded project gallery image";
+        openLightbox(src, alt, fallbackSrc, button);
+      });
+    });
+  }
+
+  if (lightboxCloseEl) {
+    lightboxCloseEl.addEventListener("click", closeLightbox);
+  }
+
+  if (lightboxEl) {
+    lightboxEl.addEventListener("click", (event) => {
+      if (event.target === lightboxEl) {
+        closeLightbox();
+      }
+    });
+  }
+
+  if (lightboxPanelEl) {
+    lightboxPanelEl.addEventListener("click", (event) => {
+      event.stopPropagation();
+    });
+  }
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && lightboxEl && !lightboxEl.hidden) {
+      closeLightbox();
+    }
+  });
 
   try {
     const projects = await loadProjects();
@@ -158,9 +277,22 @@ document.addEventListener("DOMContentLoaded", async () => {
             return "";
           }
           const alt = typeof item === "object" && item?.alt ? item.alt : `${project.title || "Project"} gallery item`;
-          return `<figure class="project-gallery-item card"><img class="project-gallery-image" src="${escapeHtml(src)}" alt="${escapeHtml(alt)}" loading="lazy" decoding="async" /></figure>`;
+          return `
+            <figure class="project-gallery-item card">
+              <button
+                class="project-gallery-button"
+                type="button"
+                data-gallery-expand
+                aria-label="Expand gallery image"
+              >
+                <img class="project-gallery-image" src="${escapeHtml(src)}" alt="${escapeHtml(alt)}" loading="lazy" decoding="async" />
+              </button>
+            </figure>
+          `;
         })
         .join("");
+
+      bindGalleryExpanders();
     }
 
     if (linkActionsEl) {

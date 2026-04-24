@@ -62,11 +62,3 @@
 }
 ```
 
-
-## Deploy on GitHub Pages
-
-1. Push this repository to GitHub.
-2. Go to repository `Settings -> Pages`.
-3. Under `Build and deployment`, choose `Deploy from a branch`.
-4. Select your main branch and `/ (root)`.
-5. Save; GitHub publishes the static site.

@@ -48,7 +48,7 @@ if (!Array.isArray(projects) || !projects.length) {
   }
 }
 
-const requiredPages = ["index.html", "project.html", "projects/index.html", "404.html", "robots.txt", "sitemap.xml", "CNAME"];
+const requiredPages = ["index.html", "project.html", "projects/index.html", "contact/index.html", "404.html", "robots.txt", "sitemap.xml", "CNAME"];
 for (const page of requiredPages) {
   if (!fs.existsSync(path.join(rootDirectory, page))) errors.push(`Missing required site file: ${page}.`);
 }
@@ -57,6 +57,7 @@ const htmlFiles = [
   "index.html",
   "project.html",
   "projects/index.html",
+  "contact/index.html",
   "404.html",
   "about.html",
   "resume.html",

@@ -58,7 +58,7 @@ window.PORTFOLIO_PROJECTS = [
     ],
     "visibility": "Public Summary",
     "featured": true,
-    "order": 110,
+    "order": 120,
     "links": {
       "live": "",
       "repo": "https://github.com/btmolloy/NetTower-Capstone-Project",
@@ -110,10 +110,71 @@ window.PORTFOLIO_PROJECTS = [
     ]
   },
   {
+    "id": "cat-colony-care-society-website",
+    "published": true,
+    "title": "NKU Cat Colony Care Society Website",
+    "shortTitle": "Cat Colony",
+    "role": "Website Developer",
+    "timeline": "June 2026 – Present",
+    "status": "Active",
+    "category": "Web",
+    "problem": "The NKU Cat Colony Care Society needed one public home for its mission, campus cats, events, fundraising, and volunteer information.",
+    "outcome": "A responsive, CMS-driven multi-page website whose shared components let organizers update public content without editing every page.",
+    "summary": "A CMS-driven public website for the NKU Cat Colony Care Society, covering its mission, campus cats, events, fundraising, and ways to get involved.",
+    "stack": [
+      "HTML",
+      "CSS",
+      "JavaScript",
+      "GitHub Pages",
+      "CMS",
+      "Accessibility"
+    ],
+    "tags": [
+      "HTML",
+      "CSS",
+      "JavaScript",
+      "GitHub Pages",
+      "CMS",
+      "Accessibility"
+    ],
+    "highlights": [
+      "Designed a multi-page information architecture for the society's mission, campus cats, events, gallery, fundraising, and volunteer information.",
+      "Built reusable header, footer, content-loading, and content-binding components for consistent updates across the site.",
+      "Added semantic structure, a skip link, and accessible carousel controls to support keyboard and assistive-technology use."
+    ],
+    "visibility": "Public",
+    "featured": true,
+    "order": 119,
+    "links": {
+      "live": "https://www.nkucatcolony.com",
+      "repo": "https://github.com/btmolloy/Cat-Colony-Care-Society",
+      "caseStudy": ""
+    },
+    "image": {
+      "src": "",
+      "alt": ""
+    },
+    "details": {
+      "overview": "The NKU Cat Colony Care Society website is a responsive public hub for the organization's mission, campus cats, events, fundraising, and ways to get involved. Its CMS bindings and shared components keep recurring public information consistent across the site's pages.",
+      "problem": "The organization needed a central, approachable website that could introduce the society, document the cats it supports, promote events and fundraising, and direct volunteers to the right information.",
+      "outcome": "The result is a deployed multi-page website with reusable site components and CMS-driven content, giving organizers a maintainable way to keep public information current.",
+      "contributions": [
+        "Designed the information architecture across home, about, campus cats, colony, events, gallery, get involved, contact, and terms pages.",
+        "Built reusable header and footer components so navigation and shared content remain consistent across the site.",
+        "Implemented content loaders, binders, and caching for CMS-managed public information.",
+        "Added responsive layouts and accessible interaction details, including semantic landmarks, a skip link, and labeled carousel controls.",
+        "Deployed the site through GitHub Pages with its public custom domain."
+      ],
+      "notes": [],
+      "nextSteps": []
+    },
+    "gallery": []
+  },
+  {
     "id": "secrets-ctf-platform",
     "published": true,
-    "title": "SECRETS: Cybersecurity Capture The Flag Platform",
-    "shortTitle": "SECRETS",
+    "title": "ASTRA (SECRETS): Cybersecurity Capture The Flag Platform",
+    "shortTitle": "ASTRA (SECRETS)",
     "role": "Outreach Developer",
     "timeline": "August 2024 - Present",
     "status": "In progress",
@@ -144,7 +205,7 @@ window.PORTFOLIO_PROJECTS = [
     ],
     "visibility": "Public Summary",
     "featured": true,
-    "order": 109,
+    "order": 118,
     "links": {
       "live": "",
       "repo": "",
@@ -212,7 +273,7 @@ window.PORTFOLIO_PROJECTS = [
       "Designed modules to run locally or offload computation to backend services."
     ],
     "visibility": "Public Summary",
-    "featured": true,
+    "featured": false,
     "order": 108,
     "links": {
       "live": "",

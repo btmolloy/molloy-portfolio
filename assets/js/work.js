@@ -82,16 +82,16 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="archive-card-content">
             <div class="archive-meta">
               <span>${escapeHtml(project.timeline || "Timeline available in case study")}</span>
-              <span>${escapeHtml(project.category || project.status || "")}</span>
+              <span>${escapeHtml(project.category || "Project")}</span>
+              <span>${escapeHtml(project.status || "Status available in case study")}</span>
             </div>
-            <h3><a href="${href}">${escapeHtml(project.shortTitle || project.title || "Untitled project")}</a></h3>
+            <h3><a href="${href}">${escapeHtml(project.title || project.shortTitle || "Untitled project")}</a></h3>
             <p class="archive-summary">${escapeHtml(project.summary || project.problem || "Project context is available in the case study.")}</p>
             <ul class="pill-list" aria-label="Project tags">${tags}</ul>
             <dl class="archive-proof">
               <div><dt>Role</dt><dd>${escapeHtml(project.role || "Contributor")}</dd></div>
-              <div><dt>Result</dt><dd>${escapeHtml(project.outcome || project.highlights?.[0] || "See the case study for outcomes.")}</dd></div>
             </dl>
-            <a class="card-link" href="${href}"><span>Read project</span><span aria-hidden="true">↗</span></a>
+            <a class="card-link" href="${href}"><span>View Project</span><span aria-hidden="true">↗</span></a>
           </div>
         </article>
       `;

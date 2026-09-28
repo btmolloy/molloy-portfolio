@@ -7,10 +7,21 @@ function escapeHtml(value) {
     .replace(/'/g, "&#39;");
 }
 
-function projectImage(project, preferArtifact = false) {
-  if (preferArtifact && Array.isArray(project.gallery) && project.gallery[0]?.src) {
-    const item = project.gallery[0];
-    return { src: item.src, alt: item.alt || `${project.title} project artifact` };
+function projectImage(project) {
+  const candidates = [
+    ...(Array.isArray(project.gallery) ? project.gallery : []),
+    project.image
+  ];
+  const item = candidates.find((candidate) => {
+    const source = typeof candidate === "string" ? candidate : candidate?.src;
+    return source && !/\.svg(?:$|[?#])/i.test(source);
+  });
+  if (item) {
+    const src = typeof item === "string" ? item : item.src;
+    const alt = typeof item === "object" && item.alt
+      ? item.alt
+      : `${project.title} project artifact`;
+    return { src, alt };
   }
   return { src: "", alt: "" };
 }
@@ -33,31 +44,26 @@ document.addEventListener("DOMContentLoaded", () => {
     .slice(0, 3);
 
   container.innerHTML = featured.map((project, index) => {
-    const image = projectImage(project, index === 0);
+    const image = projectImage(project);
     const href = `/projects/${encodeURIComponent(project.id || "")}/`;
-    const classes = `feature-card${index === 0 ? " feature-card-lead" : ""}`;
     const tags = (project.tags || []).slice(0, 4).map((tag) => `<li class="pill">${escapeHtml(tag)}</li>`).join("");
+    const projectNumber = String(index + 1).padStart(2, "0");
     const mediaMarkup = image.src
       ? `<a class="feature-media" href="${href}" aria-label="View ${escapeHtml(project.title)} case study"><img src="${escapeHtml(image.src)}" alt="${escapeHtml(image.alt)}" ${index === 0 ? 'loading="eager" fetchpriority="high"' : 'loading="lazy"'} decoding="async" /></a>`
-      : '<div class="feature-media feature-media-empty" aria-hidden="true"></div>';
+      : `<div class="feature-media feature-media-empty" aria-hidden="true"><span class="feature-media-index">${projectNumber}</span><span class="feature-media-label">${escapeHtml(project.category || "Project")}</span></div>`;
 
     return `
-      <article class="${classes}">
-        <p class="feature-number">${String(index + 1).padStart(2, "0")}</p>
+      <article class="feature-card">
         ${mediaMarkup}
         <div class="feature-content">
           <div class="feature-meta">
+            <span>${projectNumber}</span>
             <span>${escapeHtml(project.category || project.role || "Project")}</span>
-            <span>${escapeHtml(project.timeline || project.status || "")}</span>
           </div>
           <h3><a href="${href}">${escapeHtml(project.shortTitle || project.title)}</a></h3>
           <p class="feature-summary">${escapeHtml(project.summary || project.problem)}</p>
-          <dl class="feature-proof">
-            <div><dt>Role</dt><dd>${escapeHtml(project.role || "Project contributor")}</dd></div>
-            <div><dt>Result</dt><dd>${escapeHtml(project.outcome || project.highlights?.[0] || "Project outcome documented in the case study.")}</dd></div>
-          </dl>
           <ul class="pill-list" aria-label="Technologies">${tags}</ul>
-          <a class="card-link" href="${href}"><span>Read project</span><span aria-hidden="true">↗</span></a>
+          <a class="card-link" href="${href}"><span>View Project</span><span aria-hidden="true">↗</span></a>
         </div>
       </article>
     `;

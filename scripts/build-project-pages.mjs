@@ -68,6 +68,7 @@ for (const project of projects) {
 const sitemapUrls = [
   "https://www.molloy.info/",
   "https://www.molloy.info/projects/",
+  "https://www.molloy.info/contact/",
   ...projects.map((project) => `https://www.molloy.info/projects/${project.id}/`)
 ];
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>

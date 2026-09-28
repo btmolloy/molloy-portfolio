@@ -1,5 +1,5 @@
 function escapeHtml(value) {
-  return String(value)
+  return String(value ?? "")
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
@@ -7,318 +7,191 @@ function escapeHtml(value) {
     .replace(/'/g, "&#39;");
 }
 
-function renderPills(container, items, muted = false) {
-  if (!container) {
-    return;
-  }
-
-  container.innerHTML = (items || [])
-    .map((item) => `<li class="pill${muted ? " pill-muted" : ""}">${escapeHtml(item)}</li>`)
-    .join("");
-}
-
 function renderList(container, items) {
-  if (!container) {
+  if (!container) return;
+  container.innerHTML = (items || []).map((item) => `<li>${escapeHtml(item)}</li>`).join("");
+}
+
+function normalizedImage(project, item) {
+  const source = typeof item === "string" ? item : item?.src || "";
+  const src = /^(?:[a-z]+:|\/)/i.test(source) ? source : `/${source}`;
+  const alt = typeof item === "object" && item?.alt ? item.alt : `${project.title} project visual`;
+  return { src, alt };
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const projects = (Array.isArray(window.PORTFOLIO_PROJECTS) ? [...window.PORTFOLIO_PROJECTS] : [])
+    .filter((project) => project.published === true)
+    .sort((a, b) => (b.order || 0) - (a.order || 0));
+  const id = document.body.dataset.projectId || new URLSearchParams(window.location.search).get("project") || "";
+  const project = projects.find((entry) => entry.id === id);
+  const found = document.getElementById("project-found");
+  const missing = document.getElementById("project-missing");
+
+  if (!project) {
+    if (found) found.hidden = true;
+    if (missing) missing.hidden = false;
+    document.title = "Project not found — Benjamin Molloy";
     return;
   }
 
-  container.innerHTML = (items || [])
-    .map((item) => `<li>${escapeHtml(item)}</li>`)
-    .join("");
-}
+  const details = project.details || {};
+  const setText = (idName, value) => {
+    const node = document.getElementById(idName);
+    if (node) node.textContent = value || "—";
+  };
 
-document.addEventListener("DOMContentLoaded", async () => {
-  const titleEl = document.getElementById("project-title");
-  const summaryEl = document.getElementById("project-summary");
-  const overviewEl = document.getElementById("project-overview");
-  const contributionsEl = document.getElementById("project-contributions");
-  const notesEl = document.getElementById("project-notes");
-  const nextEl = document.getElementById("project-next");
-  const metaEl = document.getElementById("project-meta");
-  const visibilityEl = document.getElementById("project-visibility");
-  const stackEl = document.getElementById("project-stack");
-  const tagsEl = document.getElementById("project-tags");
-  const galleryEl = document.getElementById("project-gallery");
-  const mediaEl = document.getElementById("project-detail-media");
-  const linkActionsEl = document.getElementById("project-link-actions");
-  const heroActionsEl = document.getElementById("project-hero-actions");
-  const notesBlockEl = document.getElementById("project-notes-block");
-  const nextBlockEl = document.getElementById("project-next-block");
-  const detailColumnsEl = document.getElementById("project-detail-columns");
-  const foundSection = document.getElementById("project-found");
-  const missingSection = document.getElementById("project-missing");
-  const lightboxEl = document.getElementById("gallery-lightbox");
-  const lightboxPanelEl = document.getElementById("gallery-lightbox-panel");
-  const lightboxImageEl = document.getElementById("gallery-lightbox-image");
-  const lightboxCaptionEl = document.getElementById("gallery-lightbox-caption");
-  const lightboxCloseEl = document.getElementById("gallery-lightbox-close");
-  let activeLightboxTrigger = null;
+  document.title = `${project.title} — Benjamin Molloy`;
+  document.getElementById("project-description-meta")?.setAttribute("content", project.summary || project.problem || "Benjamin Molloy project case study.");
+  const canonicalPath = document.body.dataset.projectId
+    ? `https://www.molloy.info/projects/${encodeURIComponent(project.id)}/`
+    : `https://www.molloy.info/project.html?project=${encodeURIComponent(project.id)}`;
+  document.getElementById("project-canonical")?.setAttribute("href", canonicalPath);
 
-  async function loadProjects() {
-    if (Array.isArray(window.PORTFOLIO_PROJECTS) && window.PORTFOLIO_PROJECTS.length) {
-      return window.PORTFOLIO_PROJECTS;
-    }
+  setText("project-category", `${project.category || "Project"} / Case study`);
+  setText("project-title", project.title);
+  setText("project-summary", project.summary);
+  setText("project-role", project.role);
+  setText("project-timeline", project.timeline);
+  setText("project-status", project.status || (String(project.timeline).includes("Present") ? "In progress" : "Completed"));
+  setText("project-area", project.category || project.tags?.[0] || "Technical project");
+  setText("project-problem", details.problem || project.problem || project.summary);
+  setText("project-overview", details.overview || project.summary);
+  setText("project-outcome", details.outcome || project.outcome || project.highlights?.[0]);
 
-    const response = await fetch("data/projects.json");
-    if (!response.ok) {
-      throw new Error("Failed to fetch projects");
-    }
-
-    return response.json();
+  const tags = document.getElementById("project-tags");
+  if (tags) {
+    tags.innerHTML = (project.tags || []).slice(0, 6).map((tag) => `<li class="pill">${escapeHtml(tag)}</li>`).join("");
   }
 
-  function setMissingState() {
-    if (foundSection) {
-      foundSection.hidden = true;
-    }
-    if (missingSection) {
-      missingSection.hidden = false;
-    }
-    if (titleEl) {
-      titleEl.textContent = "Project unavailable";
-    }
-    if (summaryEl) {
-      summaryEl.textContent = "This project link may be outdated. Use the archive to open a valid project.";
-    }
+  const contributions = details.contributions?.length ? details.contributions : project.highlights || [];
+  const notes = details.notes || [];
+  const limitations = details.limitations || [];
+  const nextSteps = details.nextSteps || [];
+  renderList(document.getElementById("project-contributions"), contributions);
+  renderList(document.getElementById("project-notes"), notes);
+  renderList(document.getElementById("project-highlights"), project.highlights || []);
+  renderList(document.getElementById("project-limitations"), limitations);
+  renderList(document.getElementById("project-next"), nextSteps);
+
+  const notesBlock = document.getElementById("project-notes-block");
+  const limitationsBlock = document.getElementById("project-limitations-block");
+  const nextBlock = document.getElementById("project-next-block");
+  const nextSection = document.getElementById("next");
+  if (notesBlock) notesBlock.hidden = !notes.length;
+  if (limitationsBlock) limitationsBlock.hidden = !limitations.length;
+  if (nextBlock) nextBlock.hidden = !nextSteps.length;
+  if (nextSection) nextSection.hidden = !limitations.length && !nextSteps.length;
+
+  const workflowSection = document.getElementById("project-workflow-section");
+  const workflowList = document.getElementById("project-workflow");
+  if (workflowSection && workflowList && project.workflow?.length) {
+    workflowSection.hidden = false;
+    workflowList.innerHTML = project.workflow.map((step) => `
+      <li><strong>${escapeHtml(step.stage)}</strong><span>${escapeHtml(step.description)}</span></li>
+    `).join("");
   }
 
-  function buildExternalButton(label, href, className = "btn btn-secondary") {
-    return `<a class="${className}" href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer">${label}</a>`;
+  const rawImageData = typeof project.image === "string"
+    ? { src: project.image, alt: `${project.title} preview` }
+    : { src: project.image?.src || "", alt: project.image?.alt || `${project.title} preview` };
+  const imageData = {
+    src: /^(?:[a-z]+:|\/)/i.test(rawImageData.src) ? rawImageData.src : `/${rawImageData.src}`,
+    alt: rawImageData.alt
+  };
+  const leadGalleryItem = project.gallery?.[0];
+  const leadImage = leadGalleryItem ? normalizedImage(project, leadGalleryItem) : imageData;
+  const media = document.getElementById("project-detail-media");
+  if (media && leadImage.src) {
+    media.innerHTML = `<img src="${escapeHtml(leadImage.src)}" alt="${escapeHtml(leadImage.alt)}" loading="eager" fetchpriority="high" decoding="async" />`;
   }
 
-  function resolveImageSource(src) {
-    if (!src) {
-      return "";
-    }
+  const links = project.links || {};
+  const actions = [];
+  if (links.live) actions.push(`<a class="button button-primary" href="${escapeHtml(links.live)}" target="_blank" rel="noopener noreferrer">Open live project <span aria-hidden="true">↗</span></a>`);
+  if (links.repo) actions.push(`<a class="button ${actions.length ? "button-quiet" : "button-primary"}" href="${escapeHtml(links.repo)}" target="_blank" rel="noopener noreferrer">View source <span aria-hidden="true">↗</span></a>`);
+  if (links.caseStudy) actions.push(`<a class="button button-quiet" href="${escapeHtml(links.caseStudy)}" target="_blank" rel="noopener noreferrer">Documentation <span aria-hidden="true">↗</span></a>`);
+  actions.push(`<a class="button button-quiet" href="mailto:btmolloy2@gmail.com?subject=${encodeURIComponent(`Project question: ${project.title}`)}">Ask about this work <span aria-hidden="true">↗</span></a>`);
+  const heroActions = document.getElementById("project-hero-actions");
+  if (heroActions) heroActions.innerHTML = actions.join("");
 
-    try {
-      return new URL(src, window.location.href).toString();
-    } catch {
-      return src;
-    }
+  const gallerySection = document.getElementById("project-gallery-section");
+  const gallery = document.getElementById("project-gallery");
+  const galleryItems = project.gallery?.length ? project.gallery : imageData.src ? [imageData] : [];
+  if (!galleryItems.length) {
+    if (gallerySection) gallerySection.hidden = true;
+  } else if (gallery) {
+    gallery.innerHTML = galleryItems.map((item) => {
+      const image = normalizedImage(project, item);
+      return `
+        <figure class="project-gallery-item">
+          <button class="project-gallery-button" type="button" data-gallery-expand data-src="${escapeHtml(image.src)}" data-alt="${escapeHtml(image.alt)}" aria-label="Expand ${escapeHtml(image.alt)}">
+            <img class="project-gallery-image" src="${escapeHtml(image.src)}" alt="${escapeHtml(image.alt)}" loading="lazy" decoding="async" />
+          </button>
+        </figure>
+      `;
+    }).join("");
   }
 
-  function openLightbox(src, alt, fallbackSrc = "", trigger = null) {
-    if (!lightboxEl || !lightboxImageEl) {
-      return;
-    }
-
-    const resolvedSrc = resolveImageSource(src);
-    const resolvedFallback = resolveImageSource(fallbackSrc);
-
-    if (!resolvedSrc && !resolvedFallback) {
-      return;
-    }
-
-    lightboxImageEl.dataset.fallbackSrc = resolvedFallback || "";
-    lightboxImageEl.src = resolvedSrc || resolvedFallback;
-    lightboxImageEl.alt = alt || "Expanded project gallery image";
-    lightboxImageEl.onerror = () => {
-      const fallback = lightboxImageEl.dataset.fallbackSrc || "";
-      if (fallback && lightboxImageEl.src !== fallback) {
-        lightboxImageEl.src = fallback;
-        return;
-      }
-      if (lightboxCaptionEl) {
-        lightboxCaptionEl.textContent = "Image preview unavailable.";
-      }
-    };
-
-    if (lightboxCaptionEl) {
-      lightboxCaptionEl.textContent = alt || "";
-    }
-
-    activeLightboxTrigger = trigger;
-    lightboxEl.hidden = false;
-    lightboxEl.setAttribute("aria-hidden", "false");
-    document.body.classList.add("no-scroll");
-
-    if (lightboxCloseEl) {
-      window.requestAnimationFrame(() => lightboxCloseEl.focus());
-    }
+  const currentIndex = projects.findIndex((entry) => entry.id === project.id);
+  const nextProject = projects[(currentIndex + 1) % projects.length];
+  const nextProjectNav = document.getElementById("next-project");
+  if (nextProjectNav && nextProject && nextProject.id !== project.id) {
+    nextProjectNav.innerHTML = `
+      <a href="/projects/${encodeURIComponent(nextProject.id)}/">
+        <span class="next-project-label">Next project</span>
+        <span class="next-project-title">${escapeHtml(nextProject.title)}</span>
+        <span class="next-project-arrow" aria-hidden="true">↗</span>
+      </a>
+    `;
   }
+
+  const lightbox = document.getElementById("gallery-lightbox");
+  const lightboxPanel = document.getElementById("gallery-lightbox-panel");
+  const lightboxImage = document.getElementById("gallery-lightbox-image");
+  const lightboxCaption = document.getElementById("gallery-lightbox-caption");
+  const lightboxClose = document.getElementById("gallery-lightbox-close");
+  let previousFocus = null;
 
   function closeLightbox() {
-    if (!lightboxEl || !lightboxImageEl) {
-      return;
-    }
-
-    lightboxEl.hidden = true;
-    lightboxEl.setAttribute("aria-hidden", "true");
-    lightboxImageEl.src = "";
-    lightboxImageEl.alt = "";
-
-    if (lightboxCaptionEl) {
-      lightboxCaptionEl.textContent = "";
-    }
-
+    if (!lightbox || lightbox.hidden) return;
+    lightbox.hidden = true;
+    lightbox.setAttribute("aria-hidden", "true");
     document.body.classList.remove("no-scroll");
-    if (activeLightboxTrigger) {
-      activeLightboxTrigger.focus();
-      activeLightboxTrigger = null;
+    if (lightboxImage) {
+      lightboxImage.src = "";
+      lightboxImage.alt = "";
     }
+    previousFocus?.focus();
+    previousFocus = null;
   }
 
-  function bindGalleryExpanders() {
-    if (!galleryEl) {
-      return;
-    }
-
-    galleryEl.querySelectorAll("[data-gallery-expand]").forEach((button) => {
-      button.addEventListener("click", () => {
-        const imageEl = button.querySelector(".project-gallery-image");
-        const src = imageEl?.currentSrc || imageEl?.getAttribute("src") || "";
-        const fallbackSrc = imageEl?.getAttribute("src") || "";
-        const alt = imageEl?.getAttribute("alt") || "Expanded project gallery image";
-        openLightbox(src, alt, fallbackSrc, button);
-      });
-    });
+  function openLightbox(button) {
+    if (!lightbox || !lightboxImage || !lightboxCaption) return;
+    previousFocus = button;
+    lightboxImage.src = button.dataset.src || "";
+    lightboxImage.alt = button.dataset.alt || "Expanded project visual";
+    lightboxCaption.textContent = button.dataset.alt || "";
+    lightbox.hidden = false;
+    lightbox.setAttribute("aria-hidden", "false");
+    document.body.classList.add("no-scroll");
+    lightboxClose?.focus();
   }
 
-  if (lightboxCloseEl) {
-    lightboxCloseEl.addEventListener("click", closeLightbox);
-  }
-
-  if (lightboxEl) {
-    lightboxEl.addEventListener("click", (event) => {
-      if (event.target === lightboxEl) {
-        closeLightbox();
-      }
-    });
-  }
-
-  if (lightboxPanelEl) {
-    lightboxPanelEl.addEventListener("click", (event) => {
-      event.stopPropagation();
-    });
-  }
-
+  gallery?.querySelectorAll("[data-gallery-expand]").forEach((button) => {
+    button.addEventListener("click", () => openLightbox(button));
+  });
+  lightboxClose?.addEventListener("click", closeLightbox);
+  lightbox?.addEventListener("click", (event) => {
+    if (event.target === lightbox) closeLightbox();
+  });
+  lightboxPanel?.addEventListener("click", (event) => event.stopPropagation());
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && lightboxEl && !lightboxEl.hidden) {
-      closeLightbox();
+    if (!lightbox || lightbox.hidden) return;
+    if (event.key === "Escape") closeLightbox();
+    if (event.key === "Tab" && lightboxClose) {
+      event.preventDefault();
+      lightboxClose.focus();
     }
   });
-
-  try {
-    const projects = await loadProjects();
-    const id = new URLSearchParams(window.location.search).get("project") || "";
-    const project = projects.find((entry) => entry.id === id);
-
-    if (!project) {
-      setMissingState();
-      return;
-    }
-
-    const imageData = project.image;
-    const imageSrc = typeof imageData === "string" ? imageData : imageData?.src || "";
-    const imageAlt =
-      typeof imageData === "object" && imageData?.alt
-        ? imageData.alt
-        : `${project.title || "Project"} preview`;
-
-    const details = project.details || {};
-    const overview = details.overview || project.summary || "Detailed overview coming soon.";
-    const contributions = Array.isArray(details.contributions) && details.contributions.length
-      ? details.contributions
-      : project.highlights || [];
-    const notes = Array.isArray(details.notes) && details.notes.length ? details.notes : [];
-    const nextSteps = Array.isArray(details.nextSteps) && details.nextSteps.length ? details.nextSteps : [];
-
-    const gallery = Array.isArray(project.gallery) && project.gallery.length
-      ? project.gallery
-      : imageSrc
-        ? [{ src: imageSrc, alt: imageAlt }]
-        : [];
-
-    document.title = `${project.title || "Project"} | Benjamin Molloy`;
-
-    if (titleEl) {
-      titleEl.textContent = project.title || "Project";
-    }
-    if (summaryEl) {
-      summaryEl.textContent = project.summary || "Project details.";
-    }
-    if (overviewEl) {
-      overviewEl.textContent = overview;
-    }
-    if (metaEl) {
-      metaEl.textContent = `${project.timeline || "Timeline pending"} | ${project.role || "Project"}`;
-    }
-    if (visibilityEl) {
-      visibilityEl.textContent = `Visibility: ${project.visibility || "Public Summary"}`;
-    }
-
-    renderList(contributionsEl, contributions);
-    renderList(notesEl, notes);
-    renderList(nextEl, nextSteps);
-
-    if (notesBlockEl) {
-      notesBlockEl.hidden = !notes.length;
-    }
-    if (nextBlockEl) {
-      nextBlockEl.hidden = !nextSteps.length;
-    }
-    if (detailColumnsEl) {
-      detailColumnsEl.hidden = !notes.length && !nextSteps.length;
-    }
-
-    renderPills(stackEl, project.stack || []);
-    renderPills(tagsEl, project.tags || [], true);
-
-    if (mediaEl && imageSrc) {
-      mediaEl.innerHTML = `<img class="project-detail-hero" src="${escapeHtml(imageSrc)}" alt="${escapeHtml(imageAlt)}" loading="eager" decoding="async" />`;
-    }
-
-    if (galleryEl) {
-      galleryEl.innerHTML = gallery
-        .map((item) => {
-          const src = typeof item === "string" ? item : item?.src || "";
-          if (!src) {
-            return "";
-          }
-          const alt = typeof item === "object" && item?.alt ? item.alt : `${project.title || "Project"} gallery item`;
-          return `
-            <figure class="project-gallery-item card">
-              <button
-                class="project-gallery-button"
-                type="button"
-                data-gallery-expand
-                aria-label="Expand gallery image"
-              >
-                <img class="project-gallery-image" src="${escapeHtml(src)}" alt="${escapeHtml(alt)}" loading="lazy" decoding="async" />
-              </button>
-            </figure>
-          `;
-        })
-        .join("");
-
-      bindGalleryExpanders();
-    }
-
-    if (linkActionsEl) {
-      const links = project.links || {};
-      const actions = [];
-
-      if (links.live) {
-        actions.push(buildExternalButton("Live", links.live, "btn btn-primary"));
-      }
-      if (links.repo) {
-        actions.push(buildExternalButton("Code", links.repo));
-      }
-      if (links.caseStudy) {
-        actions.push(buildExternalButton("Case Study", links.caseStudy));
-      }
-
-      actions.push(`<a class="btn btn-secondary" href="contact.html?subject=${encodeURIComponent(`Project Inquiry: ${project.title || "Portfolio Project"}`)}#contact-form">Request Details</a>`);
-      linkActionsEl.innerHTML = actions.join("");
-    }
-
-    if (heroActionsEl) {
-      const quick = [`<a class="btn btn-secondary" href="work.html">Back to My Work</a>`];
-      quick.push(`<a class="btn btn-primary" href="contact.html?subject=${encodeURIComponent(`Project Inquiry: ${project.title || "Portfolio Project"}`)}#contact-form">Discuss Project</a>`);
-      heroActionsEl.innerHTML = quick.join("");
-    }
-  } catch (error) {
-    setMissingState();
-  }
 });

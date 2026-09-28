@@ -1,0 +1,8 @@
+{
+  "name": "benjamin-molloy-portfolio",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/build-project-pages.mjs",
+    "check": "node scripts/check-site.mjs"
+  }
+}

@@ -1,9 +1,14 @@
 window.PORTFOLIO_PROJECTS = [
   {
     "id": "nettower-agentless-network-topology",
+    "published": true,
     "title": "NetTower: Agentless Network Topology & Situational Awareness Platform",
     "role": "Capstone Project",
     "timeline": "January 2026 – April 2026",
+    "status": "Completed",
+    "category": "Networking",
+    "problem": "Small and infrastructure-limited networks need clear situational awareness without enterprise monitoring tools or complex configuration.",
+    "outcome": "A lightweight, self-hosted platform that discovers devices, infers relationships, enriches hosts, and visualizes changing network state.",
     "summary": "NetTower is an agentless network situational awareness platform designed to provide clear, high-level visibility into small or infrastructure-limited networks. It enables users to quickly understand what devices are present, reachable, and how they are generally connected—without relying on enterprise monitoring tools or complex configurations.",
     "stack": [
       "Python",
@@ -32,6 +37,24 @@ window.PORTFOLIO_PROJECTS = [
       "Developed topology visualization with node and relationship inference for rapid situational awareness.",
       "Implemented real-time state updates and modular backend layers for future expansion."
     ],
+    "workflow": [
+      {
+        "stage": "Discovery",
+        "description": "Identify devices through passive traffic analysis and active ICMP, ARP, and Nmap-based probing."
+      },
+      {
+        "stage": "Correlation",
+        "description": "Classify hosts and infer device roles and relationships from observed behavior and vendor data."
+      },
+      {
+        "stage": "Storage",
+        "description": "Represent discovered devices and changing network state in a modular MongoDB-backed data layer."
+      },
+      {
+        "stage": "Visualization",
+        "description": "Render inferred topology in interactive 2D or optional 3D views with activity and density overlays."
+      }
+    ],
     "visibility": "Public Summary",
     "featured": true,
     "order": 110,
@@ -46,6 +69,13 @@ window.PORTFOLIO_PROJECTS = [
     },
     "details": {
       "overview": "NetTower is an agentless network situational awareness platform designed to provide clear, high-level visibility into small or infrastructure-limited networks. It enables users to quickly understand what devices are present, reachable, and how they are generally connected—without relying on enterprise monitoring tools or complex configurations.",
+      "problem": "Small and infrastructure-limited networks need an approachable way to see which devices are present, reachable, and generally connected without depending on enterprise monitoring tools or complex configuration.",
+      "outcome": "NetTower combines passive and active discovery with host enrichment, dynamic state updates, and interactive topology views in a modular platform designed for local or self-hosted deployment.",
+      "limitations": [
+        "Device roles, operating systems, and relationships are inferred from observed behavior and vendor data rather than guaranteed identifiers.",
+        "Discovery coverage depends on the configured subnet, scan frequency, and selected passive or active methods.",
+        "The platform is designed around small or infrastructure-limited network environments."
+      ],
       "contributions": [
         "Designed for real-world environments such as home labs, ad-hoc networks, and off-grid systems where traditional monitoring solutions are impractical.",
         "Built a lightweight discovery system that identifies devices using a combination of passive traffic analysis and active probing (ICMP, ARP, and Nmap-based scans).",
@@ -65,24 +95,29 @@ window.PORTFOLIO_PROJECTS = [
     },
     "gallery": [
       {
-        "src": "assets/images/projects/nettower-showcase-01.png",
+        "src": "assets/images/projects/nettower-showcase-01.jpg",
         "alt": "NetTower 2D tree topology view with activity heat."
       },
       {
-        "src": "assets/images/projects/nettower-showcase-02.png",
+        "src": "assets/images/projects/nettower-showcase-02.jpg",
         "alt": "NetTower 2D star topology view with activity heat."
       },
       {
-        "src": "assets/images/projects/nettower-showcase-03.png",
+        "src": "assets/images/projects/nettower-showcase-03.jpg",
         "alt": "NetTower 3D topology view with activity heat."
       }
     ]
   },
   {
     "id": "secrets-ctf-platform",
+    "published": true,
     "title": "SECRETS: Cybersecurity Capture The Flag Platform",
     "role": "Outreach Developer",
     "timeline": "August 2024 - Present",
+    "status": "In progress",
+    "category": "Security",
+    "problem": "Beginner learners need an accessible path from instruction to realistic, hands-on cybersecurity practice.",
+    "outcome": "A workshop-ready CTF ecosystem with guided challenge tracks, unified WordPress and CTFd delivery, and repeatable event deployment.",
     "summary": "Designed and developed a beginner-focused CTF platform with interactive challenges and live instructional delivery.",
     "stack": [
       "WordPress",
@@ -144,9 +179,14 @@ window.PORTFOLIO_PROJECTS = [
   },
   {
     "id": "axis-secure-modular-dashboard",
+    "published": true,
     "title": "Secure Modular Dashboard (Axis)",
     "role": "Personal Project",
     "timeline": "October 2024 - Present",
+    "status": "In progress",
+    "category": "Product",
+    "problem": "A modular dashboard needs to remain useful offline while handling local credentials securely and reconnecting to remote services reliably.",
+    "outcome": "An offline-first Flutter dashboard with encrypted local credential workflows, retry and failover handling, and modules that can run locally or delegate to backend compute.",
     "summary": "Built a cross-platform, offline-first dashboard with modular expansion patterns and secure local credential handling.",
     "stack": [
       "Flutter",
@@ -207,9 +247,14 @@ window.PORTFOLIO_PROJECTS = [
   },
   {
     "id": "portfolio-with-secure-authentication",
+    "published": true,
     "title": "Portfolio Website with Secure Authentication",
     "role": "Personal Project",
     "timeline": "March 2025 - Present",
+    "status": "In progress",
+    "category": "Web",
+    "problem": "A home-hosted portfolio needs secure public access and manageable content without directly exposing the server.",
+    "outcome": "A hardened portfolio deployment with TOTP MFA, secure session handling and headers, Cloudflare Tunnel access, and JSON-backed content updates.",
     "summary": "Designed and deployed a home-server portfolio with hardened authentication, secure external access, and modular content management.",
     "stack": [
       "PHP",
@@ -271,9 +316,14 @@ window.PORTFOLIO_PROJECTS = [
   },
   {
     "id": "mindspace-file-based-journaling-system",
+    "published": true,
     "title": "MindSpace: File-Based Journaling System",
     "role": "Personal Project",
     "timeline": "April 2025 - Present",
+    "status": "In progress",
+    "category": "Web",
+    "problem": "A journaling tool should keep entries transparent, portable, and searchable without creating database lock-in.",
+    "outcome": "A file-system-first journaling application with structured text storage, metadata indexing, search, editing, deletion, and directory cleanup workflows.",
     "summary": "Designed a file-based journaling system with structured metadata parsing, search, and transparent storage without database dependency.",
     "stack": [
       "PHP",
@@ -334,9 +384,14 @@ window.PORTFOLIO_PROJECTS = [
   },
   {
     "id": "campus-server-network-operations",
+    "published": true,
     "title": "Campus Server and Network Operations",
     "role": "Server Team Analyst",
     "timeline": "August 2023 - Present",
+    "status": "In progress",
+    "category": "Infrastructure",
+    "problem": "Production campus systems require reliable identity administration, routine maintenance, and coordinated hardware support.",
+    "outcome": "Ongoing support for Active Directory provisioning, policy enforcement, production patching, server maintenance, and Dell hardware lifecycle operations.",
     "summary": "Supported campus server and network operations across Active Directory, Cisco infrastructure, and production maintenance workflows.",
     "stack": [
       "Windows Server",
@@ -397,9 +452,14 @@ window.PORTFOLIO_PROJECTS = [
   },
   {
     "id": "flutter-weather-application",
+    "published": true,
     "title": "Flutter Weather Application",
     "role": "Course Project",
     "timeline": "October 2024 - December 2024",
+    "status": "Completed",
+    "category": "Product",
+    "problem": "The project needed to translate city-coordinate selections and OpenWeather responses into a responsive mobile interface.",
+    "outcome": "A Flutter application that fetches city-based weather, parses JSON responses, and presents real-time data with condition-driven visuals.",
     "summary": "Developed a mobile weather app using Flutter and OpenWeather API with dynamic city-based retrieval and responsive UI feedback.",
     "stack": [
       "Flutter",
@@ -459,9 +519,14 @@ window.PORTFOLIO_PROJECTS = [
   },
   {
     "id": "enhanced-calculator-flutter",
+    "published": true,
     "title": "Enhanced Calculator Application (Flutter)",
     "role": "Course Project",
     "timeline": "November 2024 - December 2024",
+    "status": "Completed",
+    "category": "Product",
+    "problem": "An existing Flutter calculator needed advanced operations and custom expression parsing without disrupting core behavior.",
+    "outcome": "Added logarithmic and factorial operations, including custom !(8) parsing, through modular helpers while preserving existing UI behavior.",
     "summary": "Extended a Flutter calculator with custom parsing and advanced operations while preserving clean architecture and modular helpers.",
     "stack": [
       "Flutter",
@@ -519,9 +584,14 @@ window.PORTFOLIO_PROJECTS = [
   },
   {
     "id": "ccdc-competition-experience",
+    "published": true,
     "title": "Collegiate Cyber Defense Competition (CCDC)",
     "role": "Competition Experience",
     "timeline": "February 2025",
+    "status": "Completed",
+    "category": "Security",
+    "problem": "Enterprise-like services had to be hardened and kept stable under active adversarial pressure.",
+    "outcome": "Hands-on experience hardening systems, triaging logs with SIEM and forensic workflows, and coordinating detection, response, and recovery.",
     "summary": "Participated in live defensive cybersecurity competition scenarios focused on enterprise hardening, incident response, and recovery.",
     "stack": [
       "Incident Response",
@@ -580,9 +650,14 @@ window.PORTFOLIO_PROJECTS = [
   },
   {
     "id": "ctf-cybersecurity-education-research",
+    "published": true,
     "title": "CTF-Based Cybersecurity Education Research",
     "role": "Research and Outreach",
     "timeline": "2024 - Present",
+    "status": "In progress",
+    "category": "Research",
+    "problem": "Cybersecurity educators need clearer evidence about how CTF-based learning affects engagement, retention, and problem-solving.",
+    "outcome": "An ongoing research track using workshops, experiments, and learner observations to guide practical improvements in entry-level cybersecurity instruction.",
     "summary": "Conducting research on how CTF-based learning impacts cybersecurity engagement, retention, and problem-solving outcomes.",
     "stack": [
       "Research",

@@ -1,7 +1,5 @@
-const PROJECTS_PER_PAGE = 6;
-
 function escapeHtml(value) {
-  return String(value)
+  return String(value ?? "")
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
@@ -9,255 +7,151 @@ function escapeHtml(value) {
     .replace(/'/g, "&#39;");
 }
 
-function buildActionButton(label, href, style = "btn btn-secondary") {
-  return `<a class="${style}" href="${href}" target="_blank" rel="noopener noreferrer">${label}</a>`;
+function getProjectImage(project) {
+  if (project.id === "nettower-agentless-network-topology" && project.gallery?.[0]?.src) {
+    return {
+      src: project.gallery[0].src,
+      alt: project.gallery[0].alt || `${project.title} screenshot`
+    };
+  }
+
+  if (typeof project.image === "string") return { src: project.image, alt: `${project.title} preview` };
+  return { src: project.image?.src || "", alt: project.image?.alt || `${project.title} preview` };
 }
 
-document.addEventListener("DOMContentLoaded", async () => {
-  const listEl = document.getElementById("project-list");
-  const countEl = document.getElementById("project-count");
-  const paginationEl = document.getElementById("pagination");
-  const filtersEl = document.getElementById("project-filters");
-  const searchEl = document.getElementById("project-search");
+function imageUrl(source) {
+  return /^(?:[a-z]+:|\/)/i.test(source) ? source : `/${source}`;
+}
 
-  if (!listEl || !countEl || !paginationEl || !filtersEl || !searchEl) {
-    return;
+document.addEventListener("DOMContentLoaded", () => {
+  const list = document.getElementById("project-list");
+  const count = document.getElementById("project-count");
+  const filters = document.getElementById("project-filters");
+  const search = document.getElementById("project-search");
+  if (!list || !count || !filters || !search) return;
+
+  const projects = (Array.isArray(window.PORTFOLIO_PROJECTS) ? [...window.PORTFOLIO_PROJECTS] : [])
+    .filter((project) => project.published === true)
+    .sort((a, b) => (b.order || 0) - (a.order || 0));
+  const state = { category: "All", query: "" };
+
+  function searchableText(project) {
+    return [
+      project.title,
+      project.summary,
+      project.problem,
+      project.outcome,
+      project.role,
+      project.timeline,
+      project.status,
+      project.category,
+      ...(project.tags || []),
+      ...(project.stack || []),
+      ...(project.highlights || [])
+    ].join(" ").toLowerCase();
   }
 
-  const state = {
-    projects: [],
-    filtered: [],
-    tag: "All",
-    search: "",
-    page: 1
-  };
-
-  const queryProjectId = new URLSearchParams(window.location.search).get("project") || "";
-  let queryProjectHandled = false;
-  let queryProjectFocused = false;
-
-  async function loadProjects() {
-    if (Array.isArray(window.PORTFOLIO_PROJECTS) && window.PORTFOLIO_PROJECTS.length) {
-      return window.PORTFOLIO_PROJECTS;
-    }
-
-    const response = await fetch("data/projects.json");
-    if (!response.ok) {
-      throw new Error("Failed to fetch projects");
-    }
-
-    return response.json();
-  }
-
-  function applyFilters(resetPage = true) {
-    if (resetPage) {
-      state.page = 1;
-    }
-
-    const search = state.search.trim().toLowerCase();
-
-    state.filtered = state.projects.filter((project) => {
-      const tags = project.tags || [];
-      if (state.tag !== "All" && !tags.includes(state.tag)) {
-        return false;
-      }
-
-      if (!search) {
-        return true;
-      }
-
-      const searchable = [
-        project.title,
-        project.summary,
-        project.role,
-        project.timeline,
-        ...(project.stack || []),
-        ...(project.tags || []),
-        ...(project.highlights || [])
-      ]
-        .join(" ")
-        .toLowerCase();
-
-      return searchable.includes(search);
+  function filteredProjects() {
+    const query = state.query.trim().toLowerCase();
+    return projects.filter((project) => {
+      const categoryMatches = state.category === "All" || project.category === state.category;
+      const queryMatches = !query || searchableText(project).includes(query);
+      return categoryMatches && queryMatches;
     });
-
-    if (queryProjectId && !queryProjectHandled) {
-      const index = state.filtered.findIndex((project) => project.id === queryProjectId);
-      if (index >= 0) {
-        state.page = Math.floor(index / PROJECTS_PER_PAGE) + 1;
-        queryProjectHandled = true;
-      }
-    }
-
-    render();
   }
 
   function renderFilters() {
-    const allTags = new Set(["All"]);
-    state.projects.forEach((project) => {
-      (project.tags || []).forEach((tag) => allTags.add(tag));
-    });
+    const categories = ["All", ...new Set(projects.map((project) => project.category).filter(Boolean))];
+    filters.innerHTML = categories.map((category) => `
+      <button class="filter-button${category === state.category ? " active" : ""}" type="button" data-category="${escapeHtml(category)}" aria-pressed="${category === state.category}">
+        ${escapeHtml(category)}
+      </button>
+    `).join("");
 
-    filtersEl.innerHTML = Array.from(allTags)
-      .map((tag) => {
-        const active = tag === state.tag ? " active" : "";
-        return `<button class="filter-btn${active}" type="button" data-tag="${escapeHtml(tag)}">${escapeHtml(tag)}</button>`;
-      })
-      .join("");
-
-    filtersEl.querySelectorAll(".filter-btn").forEach((button) => {
+    filters.querySelectorAll("[data-category]").forEach((button) => {
       button.addEventListener("click", () => {
-        state.tag = button.dataset.tag || "All";
-        applyFilters();
-      });
-    });
-  }
-
-  function renderCards() {
-    if (!state.filtered.length) {
-      listEl.innerHTML = `
-        <article class="empty-state card">
-          <h3>No projects matched your current filters.</h3>
-          <p>Try another keyword or reset to <strong>All</strong>.</p>
-        </article>
-      `;
-      return;
-    }
-
-    const totalPages = Math.max(1, Math.ceil(state.filtered.length / PROJECTS_PER_PAGE));
-    state.page = Math.min(state.page, totalPages);
-
-    const start = (state.page - 1) * PROJECTS_PER_PAGE;
-    const pageItems = state.filtered.slice(start, start + PROJECTS_PER_PAGE);
-
-    listEl.innerHTML = pageItems
-      .map((project) => {
-        const projectId = escapeHtml(project.id || "");
-        const detailLink = `project.html?project=${encodeURIComponent(project.id || "")}`;
-        const imageData = project.image;
-        const imageSrc = typeof imageData === "string" ? imageData : imageData?.src || "";
-        const imageAlt =
-          typeof imageData === "object" && imageData?.alt
-            ? imageData.alt
-            : `${project.title || "Project"} preview`;
-
-        const mediaMarkup = imageSrc
-          ? `<figure class="project-media"><img class="project-thumb" src="${escapeHtml(imageSrc)}" alt="${escapeHtml(imageAlt)}" loading="lazy" decoding="async" /></figure>`
-          : "";
-
-        const stack = (project.stack || [])
-          .map((tech) => `<li class="pill">${escapeHtml(tech)}</li>`)
-          .join("");
-
-        const tags = (project.tags || [])
-          .map((tag) => `<li class="pill pill-muted">${escapeHtml(tag)}</li>`)
-          .join("");
-
-        const highlights = (project.highlights || [])
-          .slice(0, 3)
-          .map((point) => `<li>${escapeHtml(point)}</li>`)
-          .join("");
-
-        const inquirySubject = encodeURIComponent(`Project Inquiry: ${project.title || "Portfolio Project"}`);
-        const inquiryLink = `contact.html?subject=${inquirySubject}#contact-form`;
-
-        const links = project.links || {};
-        const actions = [];
-
-        actions.push(`<a class="btn btn-primary" href="${detailLink}">Open Project</a>`);
-
-        if (links.live) {
-          actions.push(buildActionButton("Live", escapeHtml(links.live)));
-        }
-
-        if (links.repo) {
-          actions.push(buildActionButton("Code", escapeHtml(links.repo)));
-        }
-
-        if (links.caseStudy) {
-          actions.push(buildActionButton("Case Study", escapeHtml(links.caseStudy)));
-        }
-
-        actions.push(`<a class="btn btn-secondary" href="${inquiryLink}">Request Details</a>`);
-
-        const spotlightClass = queryProjectId && project.id === queryProjectId ? " spotlight" : "";
-
-        return `
-          <article class="project-card card${spotlightClass}" id="project-${projectId}">
-            ${mediaMarkup}
-            <div>
-              <p class="project-meta mono">${escapeHtml(project.timeline || "Timeline pending")} | ${escapeHtml(project.role || "Project")}</p>
-              <h3><a class="project-title-link" href="${detailLink}">${escapeHtml(project.title || "Untitled")}</a></h3>
-              <p class="project-summary">${escapeHtml(project.summary || "Summary pending")}</p>
-            </div>
-            <ul class="pill-list">${stack}</ul>
-            <ul class="pill-list">${tags}</ul>
-            <ul class="highlight-list">${highlights}</ul>
-            <div class="project-actions">${actions.join("")}</div>
-          </article>
-        `;
-      })
-      .join("");
-  }
-
-  function renderPagination() {
-    const totalPages = Math.max(1, Math.ceil(state.filtered.length / PROJECTS_PER_PAGE));
-    if (!state.filtered.length || totalPages === 1) {
-      paginationEl.innerHTML = "";
-      return;
-    }
-
-    const buttons = [];
-    buttons.push(`<button type="button" class="page-btn" data-page="${state.page - 1}" ${state.page === 1 ? "disabled" : ""}>Prev</button>`);
-
-    for (let i = 1; i <= totalPages; i += 1) {
-      const active = i === state.page ? " active" : "";
-      buttons.push(`<button type="button" class="page-btn${active}" data-page="${i}">${i}</button>`);
-    }
-
-    buttons.push(`<button type="button" class="page-btn" data-page="${state.page + 1}" ${state.page === totalPages ? "disabled" : ""}>Next</button>`);
-
-    paginationEl.innerHTML = buttons.join("");
-
-    paginationEl.querySelectorAll(".page-btn").forEach((button) => {
-      button.addEventListener("click", () => {
-        const requestedPage = Number(button.dataset.page || 1);
-        state.page = requestedPage;
+        state.category = button.dataset.category || "All";
         render();
       });
     });
   }
 
-  function render() {
-    countEl.textContent = `${state.filtered.length} project${state.filtered.length === 1 ? "" : "s"} shown`;
-    renderFilters();
-    renderCards();
-    renderPagination();
-
-    if (queryProjectId && !queryProjectFocused) {
-      const element = document.getElementById(`project-${queryProjectId}`);
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth", block: "center" });
-        queryProjectFocused = true;
-      }
+  function renderCards(items) {
+    if (!items.length) {
+      list.innerHTML = `
+        <article class="empty-state">
+          <h3>No matching projects</h3>
+          <p>Try a broader term or choose “All.”</p>
+        </article>
+      `;
+      return;
     }
+
+    list.innerHTML = items.map((project) => {
+      const href = `/projects/${encodeURIComponent(project.id || "")}/`;
+      const image = getProjectImage(project);
+      const tags = (project.tags || []).slice(0, 4).map((tag) => `<li class="pill">${escapeHtml(tag)}</li>`).join("");
+      const mediaMarkup = image.src
+        ? `<a class="archive-media" href="${href}" aria-label="View ${escapeHtml(project.title)} case study"><img src="${escapeHtml(imageUrl(image.src))}" alt="${escapeHtml(image.alt)}" loading="lazy" decoding="async" /></a>`
+        : '<div class="archive-media archive-media-empty" aria-hidden="true"></div>';
+
+      return `
+        <article class="archive-card">
+          ${mediaMarkup}
+          <div class="archive-card-content">
+            <div class="archive-meta">
+              <span>${escapeHtml(project.timeline || "Timeline available in case study")}</span>
+              <span class="status-label">${escapeHtml(project.status || "Completed")}</span>
+            </div>
+            <h3><a href="${href}">${escapeHtml(project.title || "Untitled project")}</a></h3>
+            <p class="archive-summary"><span class="card-label">Problem</span>${escapeHtml(project.problem || project.summary || "Project context is available in the case study.")}</p>
+            <ul class="pill-list" aria-label="Project tags">${tags}</ul>
+            <dl class="archive-proof">
+              <div><dt>Role</dt><dd>${escapeHtml(project.role || "Contributor")}</dd></div>
+              <div><dt>Outcome</dt><dd>${escapeHtml(project.outcome || project.highlights?.[0] || "See the case study for outcomes.")}</dd></div>
+            </dl>
+            <a class="card-link" href="${href}"><span>Open case study</span><span aria-hidden="true">↗</span></a>
+          </div>
+        </article>
+      `;
+    }).join("");
   }
 
-  searchEl.addEventListener("input", () => {
-    state.search = searchEl.value;
-    applyFilters();
+  function render() {
+    const items = filteredProjects();
+    const activeFilters = Number(state.category !== "All") + Number(Boolean(state.query.trim()));
+    count.textContent = `${items.length} of ${projects.length} project${projects.length === 1 ? "" : "s"}${activeFilters ? " matched" : ""}`;
+    renderFilters();
+    renderCards(items);
+  }
+
+  search.addEventListener("input", () => {
+    state.query = search.value;
+    render();
   });
 
-  try {
-    const projects = await loadProjects();
-    state.projects = projects.sort((a, b) => (b.order || 0) - (a.order || 0));
-    applyFilters(false);
-  } catch (error) {
-    listEl.innerHTML = `
-      <article class="empty-state card">
-        <h3>Project archive unavailable</h3>
-        <p>Unable to load project data right now. Please try again shortly.</p>
-      </article>
-    `;
+  search.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      search.value = "";
+      state.query = "";
+      search.blur();
+      render();
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
+      event.preventDefault();
+      search.focus();
+      search.select();
+    }
+  });
+
+  if (!projects.length) {
+    count.textContent = "Project data unavailable";
+    list.innerHTML = '<article class="empty-state"><h3>The archive is temporarily unavailable.</h3><p>Please try again or get in touch directly.</p></article>';
+    return;
   }
+
+  render();
 });

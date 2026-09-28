@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
     : `https://www.molloy.info/project.html?project=${encodeURIComponent(project.id)}`;
   document.getElementById("project-canonical")?.setAttribute("href", canonicalPath);
 
-  setText("project-category", `${project.category || "Project"} / Case study`);
+  setText("project-category", project.category || "Project");
   setText("project-title", project.title);
   setText("project-summary", project.summary);
   setText("project-role", project.role);
@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ? { src: project.image, alt: `${project.title} preview` }
     : { src: project.image?.src || "", alt: project.image?.alt || `${project.title} preview` };
   const imageData = {
-    src: /^(?:[a-z]+:|\/)/i.test(rawImageData.src) ? rawImageData.src : `/${rawImageData.src}`,
+    src: !rawImageData.src || /\.svg$/i.test(rawImageData.src) ? "" : (/^(?:[a-z]+:|\/)/i.test(rawImageData.src) ? rawImageData.src : `/${rawImageData.src}`),
     alt: rawImageData.alt
   };
   const leadGalleryItem = project.gallery?.[0];
@@ -111,7 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (links.live) actions.push(`<a class="button button-primary" href="${escapeHtml(links.live)}" target="_blank" rel="noopener noreferrer">Open live project <span aria-hidden="true">↗</span></a>`);
   if (links.repo) actions.push(`<a class="button ${actions.length ? "button-quiet" : "button-primary"}" href="${escapeHtml(links.repo)}" target="_blank" rel="noopener noreferrer">View source <span aria-hidden="true">↗</span></a>`);
   if (links.caseStudy) actions.push(`<a class="button button-quiet" href="${escapeHtml(links.caseStudy)}" target="_blank" rel="noopener noreferrer">Documentation <span aria-hidden="true">↗</span></a>`);
-  actions.push(`<a class="button button-quiet" href="mailto:btmolloy2@gmail.com?subject=${encodeURIComponent(`Project question: ${project.title}`)}">Ask about this work <span aria-hidden="true">↗</span></a>`);
+  actions.push(`<a class="button button-quiet" href="mailto:btmolloy2@gmail.com?subject=${encodeURIComponent(`Project question: ${project.title}`)}">Email me about this project <span aria-hidden="true">↗</span></a>`);
   const heroActions = document.getElementById("project-hero-actions");
   if (heroActions) heroActions.innerHTML = actions.join("");
 

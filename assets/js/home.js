@@ -12,9 +12,7 @@ function projectImage(project, preferArtifact = false) {
     const item = project.gallery[0];
     return { src: item.src, alt: item.alt || `${project.title} project artifact` };
   }
-
-  if (typeof project.image === "string") return { src: project.image, alt: `${project.title} preview` };
-  return { src: project.image?.src || "", alt: project.image?.alt || `${project.title} preview` };
+  return { src: "", alt: "" };
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -38,27 +36,28 @@ document.addEventListener("DOMContentLoaded", () => {
     const image = projectImage(project, index === 0);
     const href = `/projects/${encodeURIComponent(project.id || "")}/`;
     const classes = `feature-card${index === 0 ? " feature-card-lead" : ""}`;
-    const tags = (project.tags || []).slice(0, 3).map((tag) => `<li class="pill">${escapeHtml(tag)}</li>`).join("");
+    const tags = (project.tags || []).slice(0, 4).map((tag) => `<li class="pill">${escapeHtml(tag)}</li>`).join("");
     const mediaMarkup = image.src
       ? `<a class="feature-media" href="${href}" aria-label="View ${escapeHtml(project.title)} case study"><img src="${escapeHtml(image.src)}" alt="${escapeHtml(image.alt)}" ${index === 0 ? 'loading="eager" fetchpriority="high"' : 'loading="lazy"'} decoding="async" /></a>`
       : '<div class="feature-media feature-media-empty" aria-hidden="true"></div>';
 
     return `
       <article class="${classes}">
+        <p class="feature-number">${String(index + 1).padStart(2, "0")}</p>
         ${mediaMarkup}
         <div class="feature-content">
           <div class="feature-meta">
             <span>${escapeHtml(project.category || project.role || "Project")}</span>
-            <span class="status-label">${escapeHtml(project.status || "Completed")}</span>
+            <span>${escapeHtml(project.timeline || project.status || "")}</span>
           </div>
-          <h3><a href="${href}">${escapeHtml(project.title)}</a></h3>
-          <p class="feature-summary"><span class="card-label">Problem</span>${escapeHtml(project.problem || project.summary)}</p>
-          <ul class="pill-list" aria-label="Technologies">${tags}</ul>
+          <h3><a href="${href}">${escapeHtml(project.shortTitle || project.title)}</a></h3>
+          <p class="feature-summary">${escapeHtml(project.summary || project.problem)}</p>
           <dl class="feature-proof">
-            <div><dt>My role</dt><dd>${escapeHtml(project.role || "Project contributor")}</dd></div>
-            <div><dt>Outcome</dt><dd>${escapeHtml(project.outcome || project.highlights?.[0] || "Project outcome documented in the case study.")}</dd></div>
+            <div><dt>Role</dt><dd>${escapeHtml(project.role || "Project contributor")}</dd></div>
+            <div><dt>Result</dt><dd>${escapeHtml(project.outcome || project.highlights?.[0] || "Project outcome documented in the case study.")}</dd></div>
           </dl>
-          <a class="card-link" href="${href}"><span>View case study</span><span aria-hidden="true">↗</span></a>
+          <ul class="pill-list" aria-label="Technologies">${tags}</ul>
+          <a class="card-link" href="${href}"><span>Read project</span><span aria-hidden="true">↗</span></a>
         </div>
       </article>
     `;

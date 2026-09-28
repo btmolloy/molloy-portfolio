@@ -4,7 +4,7 @@ A dependency-free static portfolio for `www.molloy.info`. The site is designed a
 
 ## Site structure
 
-- `/` — profile, selected work, capabilities, background, current focus, and contact
+- `/` — portrait-led introduction, selected work, experience and education, technical areas, current focus, and contact
 - `/projects/` — searchable and category-filtered project archive
 - `/projects/<project-id>/` — generated project case-study pages
 - `project.html?project=<project-id>` — compatibility route for older shared links
@@ -28,6 +28,7 @@ Every project includes reusable archive and case-study content:
   id: "url-safe-project-id",
   published: true,
   title: "Project title",
+  shortTitle: "Optional display title",
   role: "Your role",
   timeline: "Month YYYY – Month YYYY",
   status: "In progress | Completed | Archived",
@@ -69,6 +70,10 @@ python3 -m http.server 8765
 ```
 
 Then open `http://localhost:8765/`.
+
+## Headshot
+
+The homepage hero includes a dedicated 3:4 portrait area. Add the final image at `assets/images/headshot.jpg`, then change `background-image: none` in `.hero-portrait` to `background-image: url("../images/headshot.jpg")`.
 
 ## Design and accessibility
 

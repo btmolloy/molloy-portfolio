@@ -7,22 +7,6 @@ function escapeHtml(value) {
     .replace(/'/g, "&#39;");
 }
 
-function getProjectImage(project) {
-  if (project.id === "nettower-agentless-network-topology" && project.gallery?.[0]?.src) {
-    return {
-      src: project.gallery[0].src,
-      alt: project.gallery[0].alt || `${project.title} screenshot`
-    };
-  }
-
-  if (typeof project.image === "string") return { src: project.image, alt: `${project.title} preview` };
-  return { src: project.image?.src || "", alt: project.image?.alt || `${project.title} preview` };
-}
-
-function imageUrl(source) {
-  return /^(?:[a-z]+:|\/)/i.test(source) ? source : `/${source}`;
-}
-
 document.addEventListener("DOMContentLoaded", () => {
   const list = document.getElementById("project-list");
   const count = document.getElementById("project-count");
@@ -89,28 +73,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
     list.innerHTML = items.map((project) => {
       const href = `/projects/${encodeURIComponent(project.id || "")}/`;
-      const image = getProjectImage(project);
       const tags = (project.tags || []).slice(0, 4).map((tag) => `<li class="pill">${escapeHtml(tag)}</li>`).join("");
-      const mediaMarkup = image.src
-        ? `<a class="archive-media" href="${href}" aria-label="View ${escapeHtml(project.title)} case study"><img src="${escapeHtml(imageUrl(image.src))}" alt="${escapeHtml(image.alt)}" loading="lazy" decoding="async" /></a>`
-        : '<div class="archive-media archive-media-empty" aria-hidden="true"></div>';
+      const projectIndex = projects.findIndex((entry) => entry.id === project.id) + 1;
 
       return `
         <article class="archive-card">
-          ${mediaMarkup}
+          <p class="archive-number">${String(projectIndex).padStart(2, "0")}</p>
           <div class="archive-card-content">
             <div class="archive-meta">
               <span>${escapeHtml(project.timeline || "Timeline available in case study")}</span>
-              <span class="status-label">${escapeHtml(project.status || "Completed")}</span>
+              <span>${escapeHtml(project.category || project.status || "")}</span>
             </div>
-            <h3><a href="${href}">${escapeHtml(project.title || "Untitled project")}</a></h3>
-            <p class="archive-summary"><span class="card-label">Problem</span>${escapeHtml(project.problem || project.summary || "Project context is available in the case study.")}</p>
+            <h3><a href="${href}">${escapeHtml(project.shortTitle || project.title || "Untitled project")}</a></h3>
+            <p class="archive-summary">${escapeHtml(project.summary || project.problem || "Project context is available in the case study.")}</p>
             <ul class="pill-list" aria-label="Project tags">${tags}</ul>
             <dl class="archive-proof">
               <div><dt>Role</dt><dd>${escapeHtml(project.role || "Contributor")}</dd></div>
-              <div><dt>Outcome</dt><dd>${escapeHtml(project.outcome || project.highlights?.[0] || "See the case study for outcomes.")}</dd></div>
+              <div><dt>Result</dt><dd>${escapeHtml(project.outcome || project.highlights?.[0] || "See the case study for outcomes.")}</dd></div>
             </dl>
-            <a class="card-link" href="${href}"><span>Open case study</span><span aria-hidden="true">↗</span></a>
+            <a class="card-link" href="${href}"><span>Read project</span><span aria-hidden="true">↗</span></a>
           </div>
         </article>
       `;

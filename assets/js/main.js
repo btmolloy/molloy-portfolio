@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const themeToggle = document.querySelector("[data-theme-toggle]");
   const themeLabel = document.querySelector("[data-theme-icon]");
   const themeMeta = document.querySelector('meta[name="theme-color"]');
-  const primaryNav = document.querySelector(".site-nav");
+  const siteHeader = document.querySelector(".site-header");
 
   document.querySelectorAll(".nav-link[data-page]").forEach((link) => {
     if (link.dataset.page !== page) return;
@@ -42,11 +42,56 @@ document.addEventListener("DOMContentLoaded", () => {
     button.addEventListener("click", () => window.print());
   });
 
-  if (primaryNav) {
-    const updatePinnedNav = () => {
-      primaryNav.classList.toggle("is-pinned", window.scrollY > 52);
+  if (siteHeader) {
+    const updateHeader = () => {
+      siteHeader.classList.toggle("is-compact", window.scrollY > 52);
     };
-    updatePinnedNav();
-    window.addEventListener("scroll", updatePinnedNav, { passive: true });
+    updateHeader();
+    window.addEventListener("scroll", updateHeader, { passive: true });
+  }
+
+  const timeline = document.querySelector("[data-career-timeline]");
+  if (timeline) {
+    const previousButton = document.querySelector("[data-timeline-previous]");
+    const nextButton = document.querySelector("[data-timeline-next]");
+    const scrollTimeline = (direction) => {
+      timeline.scrollBy({ left: direction * timeline.clientWidth * 0.72, behavior: "smooth" });
+    };
+
+    previousButton?.addEventListener("click", () => scrollTimeline(-1));
+    nextButton?.addEventListener("click", () => scrollTimeline(1));
+    timeline.addEventListener("keydown", (event) => {
+      if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+      event.preventDefault();
+      scrollTimeline(event.key === "ArrowLeft" ? -1 : 1);
+    });
+
+    let pointerId = null;
+    let pointerStart = 0;
+    let scrollStart = 0;
+    timeline.addEventListener("pointerdown", (event) => {
+      if (event.pointerType !== "mouse" || event.button !== 0) return;
+      pointerId = event.pointerId;
+      pointerStart = event.clientX;
+      scrollStart = timeline.scrollLeft;
+      timeline.setPointerCapture(pointerId);
+    });
+    timeline.addEventListener("pointermove", (event) => {
+      if (event.pointerId !== pointerId) return;
+      const distance = event.clientX - pointerStart;
+      if (Math.abs(distance) > 3) timeline.classList.add("is-dragging");
+      timeline.scrollLeft = scrollStart - distance;
+    });
+    const endDrag = (event) => {
+      if (event.pointerId !== pointerId) return;
+      timeline.classList.remove("is-dragging");
+      pointerId = null;
+    };
+    timeline.addEventListener("pointerup", endDrag);
+    timeline.addEventListener("pointercancel", endDrag);
+
+    requestAnimationFrame(() => {
+      timeline.scrollLeft = timeline.scrollWidth;
+    });
   }
 });

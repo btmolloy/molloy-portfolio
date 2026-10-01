@@ -143,7 +143,7 @@ window.PORTFOLIO_PROJECTS = [
       "Added semantic structure, a skip link, and accessible carousel controls to support keyboard and assistive-technology use."
     ],
     "visibility": "Public",
-    "featured": true,
+    "featured": false,
     "order": 119,
     "links": {
       "live": "https://www.nkucatcolony.com",
@@ -205,7 +205,7 @@ window.PORTFOLIO_PROJECTS = [
     ],
     "visibility": "Public Summary",
     "featured": true,
-    "order": 118,
+    "order": 119,
     "links": {
       "live": "",
       "repo": "",
@@ -239,6 +239,62 @@ window.PORTFOLIO_PROJECTS = [
         "alt": "Flat style illustration for SECRETS: Cybersecurity Capture The Flag Platform."
       }
     ]
+  },
+  {
+    "id": "sondary-startup",
+    "published": true,
+    "title": "Sondary",
+    "shortTitle": "Sondary",
+    "role": "Founder",
+    "timeline": "2026 – Present",
+    "status": "In development",
+    "category": "Startup",
+    "problem": "Sondary is still in early development, so detailed product information is intentionally limited until the company is ready to launch publicly.",
+    "outcome": "A new startup moving from product definition into development and validation.",
+    "summary": "A new startup company currently in development; fuller product details will be shared as the work becomes public.",
+    "stack": [
+      "Startup",
+      "Product Development",
+      "Software"
+    ],
+    "tags": [
+      "Startup",
+      "Product",
+      "In Development"
+    ],
+    "highlights": [
+      "Developing the company and its first product.",
+      "Keeping early product details private while the direction is validated."
+    ],
+    "visibility": "Public Summary",
+    "featured": true,
+    "order": 118,
+    "links": {
+      "live": "",
+      "repo": "",
+      "caseStudy": ""
+    },
+    "image": {
+      "src": "",
+      "alt": ""
+    },
+    "details": {
+      "overview": "Sondary is a new startup company currently in development. Public information is deliberately concise while the initial product and company direction are being built and validated.",
+      "problem": "Early-stage company work requires product definition, validation, and technical foundations before a public launch can be described responsibly.",
+      "outcome": "The company and its first product are actively being developed.",
+      "contributions": [
+        "Developing the company and its first product.",
+        "Working through early product definition and validation.",
+        "Building the technical foundation for future public work."
+      ],
+      "notes": [
+        "Product details remain intentionally limited during early development."
+      ],
+      "nextSteps": [
+        "Publish fuller company and product details when the work is ready for public release."
+      ]
+    },
+    "gallery": []
   },
   {
     "id": "axis-secure-modular-dashboard",

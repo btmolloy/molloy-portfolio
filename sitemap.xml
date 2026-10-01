@@ -2,7 +2,9 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://www.molloy.info/</loc></url>
   <url><loc>https://www.molloy.info/projects/</loc></url>
+  <url><loc>https://www.molloy.info/contact/</loc></url>
   <url><loc>https://www.molloy.info/projects/nettower-agentless-network-topology/</loc></url>
+  <url><loc>https://www.molloy.info/projects/cat-colony-care-society-website/</loc></url>
   <url><loc>https://www.molloy.info/projects/secrets-ctf-platform/</loc></url>
   <url><loc>https://www.molloy.info/projects/axis-secure-modular-dashboard/</loc></url>
   <url><loc>https://www.molloy.info/projects/portfolio-with-secure-authentication/</loc></url>

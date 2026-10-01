@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const themeToggle = document.querySelector("[data-theme-toggle]");
   const themeLabel = document.querySelector("[data-theme-icon]");
   const themeMeta = document.querySelector('meta[name="theme-color"]');
+  const primaryNav = document.querySelector(".site-nav");
 
   document.querySelectorAll(".nav-link[data-page]").forEach((link) => {
     if (link.dataset.page !== page) return;
@@ -40,4 +41,12 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll("[data-print]").forEach((button) => {
     button.addEventListener("click", () => window.print());
   });
+
+  if (primaryNav) {
+    const updatePinnedNav = () => {
+      primaryNav.classList.toggle("is-pinned", window.scrollY > 52);
+    };
+    updatePinnedNav();
+    window.addEventListener("scroll", updatePinnedNav, { passive: true });
+  }
 });
